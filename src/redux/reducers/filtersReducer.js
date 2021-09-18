@@ -1,24 +1,32 @@
-import { FILTER_SET_ACTOR, FILTER_SET_GENRE, FILTER_SET_RATING_SORT } from '../constants';
-
+import { FILTER_SET_GENRE, FILTER_SET_RATING_SORT, FILTER_SET_PREMIER_DATE, FILTER_SET_QUERY } from '../constants';
 
 const initialState = {
-  actor: null,
-  genre: '',
+  genres: [],
   rating: 'random',
+  premierDate: 'random',
+  searchQuery: '',
 };
 
-export default filtersReducer = (state = initialState, action) => {
+const filtersReducer = (state = initialState, action) => {
   const newState = { ...state };
   const { type, payload } = action;
   switch (type) {
-    case FILTER_SET_ACTOR:
-      newState.actor = {...payload};
-      break;
     case FILTER_SET_GENRE:
-      newState.genre = payload;
+      newState.genres = [...payload];
       break;
     case FILTER_SET_RATING_SORT:
       newState.rating = payload;
-    default: break;
+      break;
+    case FILTER_SET_PREMIER_DATE:
+      newState.premierDate = payload;
+      break;
+    case FILTER_SET_QUERY:
+      newState.searchQuery = payload;
+      break;
+    default:
+      break;
   }
+  return newState;
 };
+
+export default filtersReducer;

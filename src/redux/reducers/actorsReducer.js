@@ -1,16 +1,15 @@
-import { ACTORS_ADD_ACTORS, ACTORS_SET_IS_LOAD } from '../constants';
-
+import { ACTORS_SET_ACTORS, ACTORS_SET_IS_LOAD } from '../constants';
 
 const initialState = {
   actors: [],
   isLoad: false,
 };
 
-export default actorsReducer = (state = initialState, action) => {
+const actorsReducer = (state = initialState, action) => {
   const newState = { ...state };
   const { type, payload } = action;
   switch (type) {
-    case ACTORS_ADD_ACTORS:
+    case ACTORS_SET_ACTORS:
       newState.actors = [...newState.actors, ...payload];
       break;
     case ACTORS_SET_IS_LOAD:
@@ -18,4 +17,7 @@ export default actorsReducer = (state = initialState, action) => {
       break;
     default: break;
   }
+  return newState;
 };
+
+export default actorsReducer;

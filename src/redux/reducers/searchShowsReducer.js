@@ -1,18 +1,18 @@
-import { SHOW_SET_SHOW, SHOW_SET_IS_LOAD } from '../constants';
+import { SEARCH_SHOWS_SET_SHOWS, SEARCH_SHOWS_SET_IS_LOAD } from '../constants';
 
 const initialState = {
-  show: {},
+  shows: [],
   isLoad: false,
 };
 
-const showReducer = (state = initialState, action) => {
+const searchShowsReducer = (state = initialState, action) => {
   const newState = { ...state };
   const { type, payload } = action;
   switch (type) {
-    case SHOW_SET_SHOW:
+    case SEARCH_SHOWS_SET_SHOWS:
       newState.shows = payload;
       break;
-    case SHOW_SET_IS_LOAD:
+    case SEARCH_SHOWS_SET_IS_LOAD:
       newState.isLoad = payload;
       break;
     default: break;
@@ -20,4 +20,4 @@ const showReducer = (state = initialState, action) => {
   return newState;
 };
 
-export default showReducer;
+export default searchShowsReducer;

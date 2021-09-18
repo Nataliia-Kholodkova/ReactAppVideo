@@ -1,32 +1,60 @@
 import { useMemo } from 'react';
-const useSortShows = (shows, order) => (
+const useSortByRatingShows = (shows, order) =>
   useMemo(() => {
-  const newShows = [...shows];
+    const newShows = [...shows];
+    switch (order) {
+      case 'asc':
+        newShows.sort((a, b) => b.rating.average - a.rating.average);
+        break;
+      case 'desc':
+        newShows.sort((a, b) => a.rating.average - b.rating.average);
+        break;
+      default:
+        break;
+    }
+    return newShows;
+  }, [shows, order]);
+
+const useSortByPremierDateShows = (shows, order) =>
+  useMemo(() => {
+    const newShows = [...shows];
     switch (order) {
       case 'asc':
         newShows.sort(
-          (a, b) => b.rating.average - a.rating.average);
-          break;
+          (a, b) =>
+            new Date(b.premiered).getTime() -
+                        new Date(a.premiered).getTime()
+        );
+        break;
       case 'desc':
-          newShows.sort((a, b) => a.rating.average - b.rating.average);
-          break;
+        newShows.sort(
+          (a, b) =>
+            new Date(a.premiered).getTime() -
+                        new Date(b.premiered).getTime()
+        );
+        break;
       default:
-          break;
-  }
-  return newShows;
-  }, [shows, order])
-);
+        break;
+    }
+    return newShows;
+  }, [shows, order]);
 
-const useFilteredByGenreShows = (shows, genre) => {
-  return useMemo(() => shows.filter(
-    (show) => show.genres.filter((showGenre) => showGenre.toLowerCase().includes(genre.toLowerCase())).length > 0
-  ), [shows, genre])
+const useFilteredByGenreShows = (shows, genres) => {
+  return useMemo(
+    () => {
+      if (genres.length === 0) {
+        return shows;
+      };
+      return shows.filter((show) => genres.some((genre) => show.genres.includes(genre)));
+    },
+    [shows, ...[genres]]
+  );
 };
 
-const useSortedAndSelectedShows = (shows, genre, order) => {
-  const sortedShows = useSortShows(shows, order);
-  const selectedShows = useFilteredByGenreShows(sortedShows, genre);
+const useSortedAndSelectedShows = (shows, genres, ratingOrder, dateOrder) => {
+  const sortedShows = useSortByRatingShows(useSortByPremierDateShows(shows, dateOrder), ratingOrder);
+  const selectedShows = useFilteredByGenreShows(sortedShows, genres);
   return selectedShows;
-  };
+};
 
-  export default useSortedAndSelectedShows;
+export { useSortedAndSelectedShows, useFilteredByGenreShows, useSortByPremierDateShows, useSortByRatingShows };

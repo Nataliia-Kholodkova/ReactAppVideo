@@ -1,7 +1,8 @@
-import { SHOWS_ADD_SHOWS, SHOWS_SET_IS_LOAD, SHOWS_SET_PAGE, SHOWS_IS_FROM_SEARCH } from '../constants';
+import { SHOWS_SET_SHOWS, SHOWS_SET_IS_LOAD, SHOWS_SET_PAGE } from '../constants';
+import { getShows } from '../../utils/getDataFromServer';
 
 const setShowsActionCreator = (payload) => ({
-  type: SHOWS_ADD_SHOWS, payload
+  type: SHOWS_SET_SHOWS, payload
 });
 
 const setShowsIsLoadActionCreator = (payload) => ({
@@ -12,10 +13,11 @@ const setShowsPageActionCreator = (payload) => ({
   type: SHOWS_SET_PAGE, payload
 });
 
-const setShowsFromSearchActionCreator = (payload) => ({
-  type: SHOWS_IS_FROM_SEARCH, payload
-});
+const getShowsActionCreator = (page) => {
+  return (dispatch) => {
+    return getShows(page)
+      .then((shows) => dispatch({ type: SHOWS_SET_SHOWS, payload: shows }));
+  };
+};
 
-export { setShowsActionCreator, setShowsFromSearchActionCreator, setShowsIsLoadActionCreator, setShowsPageActionCreator };
-
-
+export { setShowsActionCreator, setShowsIsLoadActionCreator, setShowsPageActionCreator, getShowsActionCreator };
