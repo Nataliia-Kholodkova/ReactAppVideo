@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { setFilterByGenreActionCreator, setFilterByRatingActionCreator, setFilterByRPremierDateActionCreator } from '../../redux/actionCreators/filtersActionCreators';
 import genreNames from '../../utils/genres';
 import styles from './Aside.module.css';
-
-// import Input from '../UI/Input/Input';
 import CheckBox from '../UI/CheckBox/CheckBox';
 import Radio from '../UI/Radio/Radio';
 
@@ -25,7 +23,6 @@ const Aside = ({ genres, rating, premierDate, setGenre, setRatingOrder, setPremi
 
   return (
     <aside className={styles.aside}>
-      {/* <Input type="search" /> */}
       <div>
         <h3>Select by genres</h3>
         {genreNames.map((genreName) => <CheckBox key={genreName} name={genreName} value={genreName} title={genreName} onChange={onChangeCheckBox} />)}

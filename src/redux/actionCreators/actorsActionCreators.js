@@ -9,9 +9,9 @@ const setActorsIsLoadActionCreator = (payload) => ({
   type: ACTORS_SET_IS_LOAD, payload,
 });
 
-const getActorsActionCreator = () => {
+const getActorsActionCreator = (query) => {
   return (dispatch) => {
-    return getActors()
+    return getActors(query)
       .then((actors) => dispatch({ type: ACTORS_SET_ACTORS, payload: actors }));
   };
 };

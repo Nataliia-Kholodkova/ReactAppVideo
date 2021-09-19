@@ -18,11 +18,15 @@ const getShowByQuery = (query) => {
 };
 
 const getActors = (query) => {
-  return HTTP_AXIOS.get(`search/people?q=${query}`).then(data => data.data);
+  return HTTP_AXIOS.get(`search/people?q=${query}`).then(data => data.data).then((data) => data.map((item) => item.person));
 };
 
 const getActorbyId = (actorId) => {
-  return HTTP_AXIOS.get(`people/${actorId}?embed=castcredits`).then(data => data.data);
+  return HTTP_AXIOS.get(`people/${actorId}`).then(data => data.data);
 };
 
-export { getActorbyId, getActors, getShowById, getShows, getShowByQuery };
+const getActorCast = (actorId) => {
+  return HTTP_AXIOS.get(`people/${actorId}/castcredits?embed=show`).then(data => data.data).then((data) => data.map((item) => item._embedded.show));
+};
+
+export { getActorbyId, getActors, getShowById, getShows, getShowByQuery, getActorCast };

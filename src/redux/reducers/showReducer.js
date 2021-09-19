@@ -10,7 +10,7 @@ const showReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case SHOW_SET_SHOW:
-      newState.shows = payload;
+      newState.show = payload;
       break;
     case SHOW_SET_IS_LOAD:
       newState.isLoad = payload;

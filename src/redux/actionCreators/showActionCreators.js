@@ -10,7 +10,7 @@ const setShowIsLoadActionCreator = (payload) => ({
 });
 
 const getShowActionCreator = (id) => {
-  return (dispatch) => () => {
+  return (dispatch) => {
     return getShowById(id)
       .then((show) => dispatch({ type: SHOW_SET_SHOW, payload: show }));
   };

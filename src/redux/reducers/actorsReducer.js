@@ -10,7 +10,7 @@ const actorsReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case ACTORS_SET_ACTORS:
-      newState.actors = [...newState.actors, ...payload];
+      newState.actors = [...payload];
       break;
     case ACTORS_SET_IS_LOAD:
       newState.isLoad = payload;

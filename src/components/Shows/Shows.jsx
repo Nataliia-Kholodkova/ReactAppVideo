@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useSortedAndSelectedShows } from '../../utils/filterShows';
+import ShowSmall from '../ShowSmall/ShowSmall';
 
 // const a = {
 //   id: 1,
@@ -50,22 +51,11 @@ import { useSortedAndSelectedShows } from '../../utils/filterShows';
 // };
 
 const Shows = ({ shows, isLoad, genres, rating, premierDate }) => {
-  const Template = ({ show }) => (
-    <div>
-      <h1>{show.name}</h1>
-      <img src={show.image?.medium ?? ''} alt={show.name} />
-      <img src={show.image?.original ?? ''} alt={show.name} />
-      {show.genres.map((genre) => <p key={genre}>{genre}</p>)}
-      <p>{show.rating.average}</p>
-      <p>{show.premiered}</p>
-    </div>
-  );
-
   const newShows = useSortedAndSelectedShows(shows, genres, rating, premierDate);
 
   return (
     <>
-      {newShows.map((show) => <Template show={show} key={show.id} />)}
+      {newShows.map((show) => <ShowSmall show={show} key={show.id} />)}
     </>
   );
 };
