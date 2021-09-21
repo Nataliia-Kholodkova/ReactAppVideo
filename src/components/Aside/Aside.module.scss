@@ -1,3 +1,42 @@
+@import '../../mixins.scss';
+@import '../../variables.scss';
+
 .aside {
-  width: 30%;
+  position: fixed;
+  top: 60px;
+  left: -260px;
+  width: 320px;
+  z-index: 1;
+  padding: 8px 60px 8px 20px;
+  box-sizing: border-box;
+  @extend %transition;
+  background-color: $darkColor;
+
+  &.opened {
+    left: 0;
+  }
+
+  @media screen and(min-width: 768px) {
+    top: 100px;
+    left: 0;
+     width: 33%;
+     padding: 8px 15px;
+  }
+
+  @media screen and(min-width: 768px) {
+    width: 25%;
+  }
 }
+
+.section {
+  margin-bottom: 25px;
+}
+
+.title {
+  @extend %reset;
+  width: 100%;
+  margin-bottom: 15px;
+  @include fontView(20px, 400);
+}
+
+

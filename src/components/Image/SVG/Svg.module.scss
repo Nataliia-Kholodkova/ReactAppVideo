@@ -1,0 +1,14 @@
+@import '../../../variables';
+@import '../../../mixins';
+
+.star {
+  fill: rgba($cyanColor, 0.5);
+
+  &.active {
+    fill: $cyanColor;
+  }
+
+  @media screen and (min-width: 960px) {
+    width: 20px;
+  }
+}

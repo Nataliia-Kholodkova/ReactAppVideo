@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { setActorsIsLoadActionCreator, getActorsActionCreator } from '../../../../redux/actionCreators/actorsActionCreators';
 import Actors from '../../../Actors/Actors';
 
-// import Shows from '../../../Shows/Shows';
-
 const ActorsPage = ({ actors, isLoad, query, setActorsLoad, setActors }) => {
   useEffect(() => {
     setActorsLoad(true);
@@ -17,10 +15,11 @@ const ActorsPage = ({ actors, isLoad, query, setActorsLoad, setActors }) => {
   if (actors.length === 0) {
     return null;
   }
-
-  return <Actors actors={actors} isLoad={isLoad} />;
-
-  // return <Shows shows={shows} isLoad={isLoad} />;
+  return (
+    <main className="main mainSingle">
+      <Actors actors={actors} isLoad={isLoad} />;
+    </main>
+  );
 };
 
 const mapDispatchToProps = (dispatch) => {

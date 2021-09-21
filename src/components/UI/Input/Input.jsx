@@ -1,9 +1,12 @@
 import React from 'react';
+import SearchSvg from '../../Image/SVG/Search';
+import styles from './Input.module.css';
 
 const Input = ({ type, name, value, onChange, placeholder }) => {
   return (
-    <label>
-      <input type={type} name={name} value={value} placeholder={placeholder} onChange={(e) => onChange(e)} />
+    <label className={styles.label}>
+      <input type={type} name={name} value={value} placeholder={placeholder} className={styles.input} onChange={(e) => onChange(e)} />
+      <SearchSvg />
     </label>
   );
 };

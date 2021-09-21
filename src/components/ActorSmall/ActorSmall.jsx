@@ -1,20 +1,25 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import Image from '../Image/Image';
+import maleImg from '../../assets/img/avatar_male.png';
+import femaleImg from '../../assets/img/avatar_female.png';
+import styles from './ActioSmall.module.css';
 
 const ActorSmall = ({ actor }) => {
   const hist = useHistory();
   if (Object.keys(actor).length === 0) {
     return null;
   }
-  const { name, country, image, id } = actor;
+  const { name, image, id } = actor;
   return (
-    <div onClick={() => hist.push(`/actors/${id}`)}>
-      <h1>{name}</h1>
-      <img src={image
-        ? image.medium ?? ''
-        : ''} alt={name} />
-      <p>{country?.name ?? ''}</p>
-    </div>
+    <section onClick={() => hist.push(`/actors/${id}`)} className={styles.section}>
+      <h1 className={styles.title}>{name}</h1>
+      <div className={styles.imageContainer}>
+        <Image src={image?.original ?? image?.medium ?? (actor.gender === 'Male'
+          ? maleImg
+          : femaleImg)} alt={name} className="showSmallImg" />
+      </div>
+    </section>
   );
 };
 

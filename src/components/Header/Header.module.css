@@ -1,1 +1,1 @@
-.header{width:100%}
+.header{position:sticky;top:0;margin-bottom:15px;width:100%;padding:10px 15px;background-color:#1a1a1b;z-index:9999}.nav{position:relative;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center}.homePageLink{font-family:"Kaushan Script",cursive;font-size:24px;font-weight:500;color:#00fff5}

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setSearchShowsIsLoadActionCreator, getSearchShowsActionCreator } from '../../../../redux/actionCreators/searchShowsActionCreators';
-
+import Aside from '../../../Aside/Aside';
 import Shows from '../../../Shows/Shows';
 
 const ShowsPage = ({ showsState, query, setShowsLoad, setShows }) => {
@@ -19,7 +19,14 @@ const ShowsPage = ({ showsState, query, setShowsLoad, setShows }) => {
     return null;
   }
 
-  return <Shows shows={shows} isLoad={isLoad} />;
+  return (
+    <>
+      <Aside />
+      <main className="main mainAside">
+        <Shows shows={shows} isLoad={isLoad} />
+      </main>
+    </>
+  );
 };
 
 const mapDispatchToProps = (dispatch) => {

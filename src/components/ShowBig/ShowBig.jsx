@@ -1,36 +1,52 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import Parser from 'html-react-parser';
+import styles from './ShowBig.module.css';
+import Image from '../Image/Image';
+import noImg from '../../assets/img/no-image.svg';
+import calculateStars from '../../utils/calculateRatingStars';
+import CarouselConponent from '../UI/Carousel/CarouselComponent';
 
 const ShowBig = ({ show }) => {
-  const hist = useHistory();
   if (Object.keys(show).length === 0) {
     return null;
   }
   const { image, name, rating: { average }, premiered, genres, status, schedule: { time, days }, summary, _embedded: { cast } } = show;
+  const stars = calculateStars(average);
   return (
-    <section>
-      <h1>{name}</h1>
-      <img src={image.original || image.medium} />
-      <p>{average}</p>
-      <p>{premiered}</p>
-      {genres.map((genre) => <p key={genre}>{genre}</p>)}
-      {status === 'Ended'
-        ? <p>{status}</p>
-        : <p>{time}, {days.map((day) => <span key={day}>{day}</span>)}</p>
-      }
-      {summary}
-      {cast.map(
-        (item) => (
-          <div key={item.person.id} onClick={() => {
-            hist.push(`/actors/${item.person.id}`);
-          }}>
-            <img src={item.person.image.medium}></img>
-            <p>{item.person.name}</p>
-          </div>
-        )
-      )
-      }
-
+    <section className={styles.section}>
+      <h1 className={styles.title}>{name}</h1>
+      <div className={styles.imageContainer}>
+        <Image src={image?.original ?? image?.medium ?? noImg} alt={show.name} className="showBigImg" />
+      </div>
+      <div className={styles.contentContainer}>
+        <div className={styles.stars}>
+          {stars}
+        </div>
+        <div className={styles.container}>
+          <h3>Premiered:</h3>
+          <p>{premiered}</p>
+        </div>
+        <div className={styles.genres}>
+          <h3>Genres</h3>
+            {
+              genres.map((genre) =>
+                <span className={styles.genre} key={genre}>
+                  {genre}
+                </span>)
+            }
+        </div>
+        <div className={styles.container}>
+          <h3>Streaming Shedule:</h3>
+          {status === 'Ended'
+            ? <p>{status}</p>
+            : <p>{time}, {days.map((day) => <span key={day}>{day}</span>)}</p>
+          }
+        </div>
+      </div>
+      <div className={styles.container}>
+        {Parser(summary)}
+      </div>
+      <CarouselConponent items={cast} isActor={true} />
     </section>
   );
 };

@@ -1,0 +1,137 @@
+@import './_variables';
+@import './_mixins';
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @include fontView(14px, 300);
+  line-height: 1.5;
+  color: white;
+  background-color: $darkColor;
+  overflow-x: hidden;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+#root {
+  width: 95%;
+  margin: 0 auto;
+
+  @media screen and (min-width: 469px) {
+    width: 85%;
+  }
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+button,
+input,
+input::placeholder {
+    display: block;
+    font: inherit;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+button,
+input[type="radio"],
+input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+.hidden {
+  display: none;
+}
+
+.disabled {
+  cursor: auto;
+}
+
+.lastDiv {
+  width: 100%;
+  height: 20px;
+  background: transparent;
+}
+
+.carousel-container {
+  margin-top: 20px;
+  width: 100%;
+  height: fit-content;
+}
+
+.custom-dot-list-style {
+  display: none !important;
+
+  .react-multi-carousel-dot button {
+  border-color: rgba($cyanColor, 0.6);
+  }
+
+  .react-multi-carousel-dot--active button {
+    background: transparent;
+    border-color: $cyanColor;
+  }
+}
+
+.react-multi-carousel-item {
+  overflow: hidden;
+}
+
+.react-multi-carousel-list {
+  .react-multiple-carousel__arrow {
+    bottom: 5%;
+    background-color: rgba($cyanColor, 0.3);
+    &:hover {
+      background-color: rgba($cyanColor, 0.5);
+    }
+  }
+}
+
+.main {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (min-width: 768px) {
+    width: 70%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+.mainSingle {
+  margin: 0 auto;
+}
+
+.mainAside {
+  margin-left: auto;
+}
+
+.mainTitle {
+  @extend %reset;
+  width: 100%;
+  @include fontView(36px, 600);
+  text-align: center;
+  color: $cyanColor;
+}

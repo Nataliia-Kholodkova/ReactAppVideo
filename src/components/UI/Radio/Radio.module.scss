@@ -1,0 +1,75 @@
+@import '../../../mixins.scss';
+@import '../../../variables.scss';
+
+.label {
+  @extend %reset;
+  margin-bottom: 15px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.title {
+  margin-left: 5px;
+  flex-grow: 1;
+}
+
+.input {
+
+  &  + .inputIco {
+    @extend %reset;
+    position: relative;
+    display: block;
+    width: 26px;
+    height: 26px;
+    border: 1px solid rgba($darkCyanColor, 0.6);
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    @extend %transition;
+
+    &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        content: '';
+        display: block;
+        width: 10px;
+        height: 10px;
+        border: 1px solid rgba($darkCyanColor, 0.6);
+        background-color: rgba($darkCyanColor, 0.3);
+        border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        -ms-border-radius: 50%;
+        -o-border-radius: 50%;
+        @extend %transition;
+      }
+}
+
+    &:hover, &:focus {
+      & + .inputIco {
+        border-color: $cyanColor;
+
+        &::after {
+          border-color: $cyanColor;
+          background-color: $cyanColor;
+        }
+      }
+    }
+
+  &:checked {
+    & + .inputIco {
+    border-color: $cyanColor;
+      &::after {
+        border-color: $cyanColor;
+        background-color: $cyanColor;
+      }
+    }
+  }
+}

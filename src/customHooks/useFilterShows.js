@@ -52,7 +52,9 @@ const useFilteredByGenreShows = (shows, genres) => {
 };
 
 const useSortedAndSelectedShows = (shows, genres, ratingOrder, dateOrder) => {
-  const sortedShows = useSortByRatingShows(useSortByPremierDateShows(shows, dateOrder), ratingOrder);
+  const sortedShows = useSortByRatingShows(
+    useSortByPremierDateShows(shows, dateOrder),
+    ratingOrder);
   const selectedShows = useFilteredByGenreShows(sortedShows, genres);
   return selectedShows;
 };

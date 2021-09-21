@@ -1,18 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { setFilterByGenreActionCreator, setFilterByRatingActionCreator, setFilterByRPremierDateActionCreator } from '../../redux/actionCreators/filtersActionCreators';
-import genreNames from '../../utils/genres';
+import { setFilterByRatingActionCreator, setFilterByRPremierDateActionCreator } from '../../redux/actionCreators/filtersActionCreators';
 import styles from './Aside.module.css';
-import CheckBox from '../UI/CheckBox/CheckBox';
 import Radio from '../UI/Radio/Radio';
+import BurgerButton from '../UI/BurgerButton/BurgerButton';
 
-const Aside = ({ genres, rating, premierDate, setGenre, setRatingOrder, setPremierDateOrder }) => {
-  const onChangeCheckBox = ({ target }) => {
-    target.checked
-      ? setGenre(genres.concat(target.value))
-      : setGenre(genres.filter((genre) => genre !== target.value));
-  };
-
+const Aside = ({ setRatingOrder, setPremierDateOrder }) => {
   const onChangeRadioDate = ({ target }) => {
     setPremierDateOrder(target.value);
   };
@@ -21,41 +14,38 @@ const Aside = ({ genres, rating, premierDate, setGenre, setRatingOrder, setPremi
     setRatingOrder(target.value);
   };
 
+  const toggleAsideOpen = () => {
+    setAsideOpened(!isAsideOpened);
+  };
+
+  const [isAsideOpened, setAsideOpened] = useState(false);
+
   return (
-    <aside className={styles.aside}>
-      <div>
-        <h3>Select by genres</h3>
-        {genreNames.map((genreName) => <CheckBox key={genreName} name={genreName} value={genreName} title={genreName} onChange={onChangeCheckBox} />)}
-      </div>
-      <div>
-        <h3>Sort by premier date</h3>
-        <Radio name="premierDate" value="random" title="Random" checked onChange={onChangeRadioDate} />
+    <aside className={`${styles.aside} ${isAsideOpened ? `${styles.opened}` : ''}`}>
+      <BurgerButton onClick={toggleAsideOpen} className="asideShow" />
+      <section className={styles.section}>
+        <h3 className={styles.title}>Sort by premier date</h3>
+        <Radio name="premierDate" value="random" title="Reset" checked onChange={onChangeRadioDate} />
         <Radio name="premierDate" value="asc" title="Acsending" onChange={onChangeRadioDate} />
-        <Radio name="premierDate" value="desc" title="Descending" checked onChange={onChangeRadioDate}/>
-      </div>
-      <div>
-        <h3>Sort by rating</h3>
-        <Radio name="rating" value="random" title="Random" checked onChange={onChangeRadioRating} />
+        <Radio name="premierDate" value="desc" title="Descending" onChange={onChangeRadioDate}/>
+      </section>
+      <section className={styles.section}>
+        <h3 className={styles.title}>Sort by rating</h3>
+        <Radio name="rating" value="random" title="Reset" checked onChange={onChangeRadioRating} />
         <Radio name="rating" value="asc" title="Acsending" onChange={onChangeRadioRating} />
         <Radio name="rating" value="desc" title="Descending" onChange={onChangeRadioRating}/>
-      </div>
+      </section>
     </aside>
   );
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const setGenre = (genre) => dispatch(setFilterByGenreActionCreator(genre));
   const setRatingOrder = (order) => dispatch(setFilterByRatingActionCreator(order));
   const setPremierDateOrder = (order) => dispatch(setFilterByRPremierDateActionCreator(order));
 
   return {
-    setGenre, setRatingOrder, setPremierDateOrder
+    setRatingOrder, setPremierDateOrder
   };
 };
 
-const mapStateToProps = (state) => {
-  const { genres, rating, premierDate } = state.filters;
-  return { genres, rating, premierDate };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Aside);
+export default connect(null, mapDispatchToProps)(Aside);

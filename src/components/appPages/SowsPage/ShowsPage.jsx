@@ -1,37 +1,51 @@
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { setShowsPageActionCreator, setShowsIsLoadActionCreator, getShowsActionCreator } from '../../../redux/actionCreators/showsActionCreators';
+import { setShowsPageActionCreator, setShowsIsLoadActionCreator, getShowsActionCreator, setShowsShouldLoadActionCreator } from '../../../redux/actionCreators/showsActionCreators';
+import useObserver from '../../../customHooks/useObserver';
 
 import Shows from '../../Shows/Shows';
+import Aside from '../../Aside/Aside';
 
-const ShowsPage = ({ isLoad, shows, page, setShowsLoad, setShows }) => {
-  const firstMount = useRef(true);
+const ShowsPage = ({ isLoad, shows, shouldLoad, page, setShowsLoad, setShows, setPage, setShowsShouldLoad }) => {
+  const lastDivRef = useRef();
+  useObserver(lastDivRef, isLoad, () => { setPage(page + 1); });
+
   useEffect(() => {
-    if (firstMount.current) {
-      firstMount.current = false;
-      if (shows.length > 0) {
-        return;
-      }
+    if (shouldLoad) {
+      setShowsLoad(true);
+      setShows(page)
+        .finally(() => {
+          setShowsLoad(false);
+        });
     }
-    setShowsLoad(true);
-    setShows(page)
-      .finally(() => {
-        setShowsLoad(false);
-      });
+    setShowsShouldLoad(true);
+    return () => {
+      setShowsShouldLoad(false);
+    };
   }, [page]);
 
-  return <Shows shows={shows} isLoad={isLoad} />;
+  return (
+    <>
+      <Aside />
+      <main className="main mainAside">
+        <Shows shows={shows} isLoad={isLoad} />
+        <div className="lastDiv" ref={lastDivRef}></div>
+      </main>
+    </>
+  );
 };
 
 const mapDispatchToProps = (dispatch) => {
   const setShows = (page) => dispatch(getShowsActionCreator(page));
   const setShowsLoad = (flag) => dispatch(setShowsIsLoadActionCreator(flag));
+  const setShowsShouldLoad = (flag) => dispatch(setShowsShouldLoadActionCreator(flag));
   const setPage = (page) => dispatch(setShowsPageActionCreator(page));
 
   return {
     setShows,
     setPage,
-    setShowsLoad
+    setShowsLoad,
+    setShowsShouldLoad,
   };
 };
 

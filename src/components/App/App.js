@@ -6,29 +6,22 @@ import ShowsResults from '../appPages/SearchResults/ShowsResults/ShowsResults';
 import ShowsPage from '../appPages/SowsPage/ShowsPage';
 import ShowPage from '../appPages/ShowPage/ShowPage';
 import ActorPage from '../appPages/ActorPage/ActorPage';
-import ActorsResults from '../appPages/SearchResults/ActorsSearch/ActorsResults';
 import MainPage from '../appPages/MainPage/MainPage';
-import Aside from '../Aside/Aside';
 
-function App () {
-  return (
+const App = () => (
     <div className={styles.root}>
       <Header />
-      <Aside />
-      <main className={styles.main}>
+      <>
         <Switch>
           <Route exact path="/" render={() => <MainPage />} />
           <Route exact path="/shows" render={() => <ShowsPage />} />
           <Route exact path="/shows/:genre" render={() => <ShowsPage />} />
           <Route exact path="/search/shows/:query" render={() => <ShowsResults />} />
           <Route exact path="/shows/show/:showId" render={() => <ShowPage />} />
-
           <Route exact path="/actors/:actorId" render={() => <ActorPage />} />
-          <Route exact path="/search/actors/:query" render={() => <ActorsResults />} />
         </Switch>
-      </main>
-    </div>
-  );
-}
+      </>
+  </div>
+);
 
 export default App;

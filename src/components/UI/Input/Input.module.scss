@@ -1,0 +1,49 @@
+@import '../../../variables';
+@import '../../../mixins';
+
+.label {
+    position: relative;
+    padding: 5px 0;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+
+    svg {
+        position: absolute;
+        top: 6px;
+        right: 19px;
+        width: 20px;
+        fill: $darkCyanColor;
+        @extend %transition;
+    }
+
+    &:hover {
+        svg {
+            fill: $cyanColor;
+        }
+    }
+}
+
+.input {
+    width: 60%;
+    padding: 5px 10px;
+    margin-right: 20px;
+    @include fontView(16px, 300);
+    color: $cyanColor;
+    border-bottom: 1px solid white;
+    @extend %transition;
+
+    &:hover,
+    &:focus {
+        border-bottom-color: $cyanColor;
+    }
+
+    &::placeholder {
+        @include fontView(14px, 300);
+    }
+
+    @media screen and (min-width: 768px) {
+      width: 100%;
+    }
+}

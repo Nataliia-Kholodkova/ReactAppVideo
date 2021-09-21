@@ -1,4 +1,4 @@
-import { SHOWS_SET_SHOWS, SHOWS_SET_IS_LOAD, SHOWS_SET_PAGE } from '../constants';
+import { SHOWS_SET_SHOWS, SHOWS_SET_IS_LOAD, SHOWS_SET_PAGE, SHOWS_SOULD_LOAD } from '../constants';
 import { getShows } from '../../utils/getDataFromServer';
 
 const setShowsActionCreator = (payload) => ({
@@ -13,6 +13,10 @@ const setShowsPageActionCreator = (payload) => ({
   type: SHOWS_SET_PAGE, payload
 });
 
+const setShowsShouldLoadActionCreator = (payload) => ({
+  type: SHOWS_SOULD_LOAD, payload
+});
+
 const getShowsActionCreator = (page) => {
   return (dispatch) => {
     return getShows(page)
@@ -20,4 +24,4 @@ const getShowsActionCreator = (page) => {
   };
 };
 
-export { setShowsActionCreator, setShowsIsLoadActionCreator, setShowsPageActionCreator, getShowsActionCreator };
+export { setShowsActionCreator, setShowsIsLoadActionCreator, setShowsPageActionCreator, getShowsActionCreator, setShowsShouldLoadActionCreator };

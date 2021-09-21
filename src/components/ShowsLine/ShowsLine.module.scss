@@ -1,0 +1,28 @@
+@import '../../mixins';
+@import '../../variables';
+
+.section {
+  width: 100%;
+  margin-bottom: 35px;
+  position: relative;
+}
+
+.linkTitle {
+  width: fit-content;
+  position: absolute;
+  top: 60%;
+  left: 20px;
+  margin-bottom: 15px;
+  @extend %link;
+  @include fontView(30px, 600);
+  color: $cyanColor;
+  border-bottom: 2px solid transparent;
+  z-index: 1;
+  text-shadow: -2px -1px $darkColor;
+  @extend %transition;
+
+  &:hover {
+    border-bottom: 2px solid $cyanColor;
+}
+}
+

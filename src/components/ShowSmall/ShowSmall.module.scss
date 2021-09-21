@@ -1,0 +1,81 @@
+@import '../../mixins';
+@import '../../variables';
+
+.section {
+  margin-bottom: 30px;
+  padding: 0 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 50%;
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 33%;
+  }
+}
+
+.title {
+  @extend %reset;
+  margin-bottom: 20px;
+  @include fontView(26px, 600);
+}
+
+.imageContainer {
+  overflow: hidden;
+
+  @media screen and (min-width: 469px) {
+    width: 70%;
+    margin-right: auto;
+  }
+
+  @media screen and (min-width: 768px) {
+    width: 100%;
+  }
+}
+
+.genres {
+  margin: 10px 0;
+  display: flex;
+}
+
+.genre {
+  @extend %link;
+  margin-right: 10px;
+  text-align: center;
+  @extend %transition;
+
+  &:hover {
+    color: $cyanColor;
+  }
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+
+  @media screen and (min-width: 960px) {
+    flex-wrap: wrap;
+  }
+}
+
+.rating {
+  margin-left: 10px;
+  color: $darkCyanColor;
+
+  @media screen and (min-width: 960px) {
+    margin-left: 0;
+    font-size: 12px;
+  }
+}
+
+.date {
+  @include fontView(12px, 300);
+  font-style: italic;
+}

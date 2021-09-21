@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setActorIsLoadActionCreator, getActorActionCreator, setActorCastIsLoadActionCreator, getActorCastActionCreator } from '../../../redux/actionCreators/actorActionCreators';
 import ActorBig from '../../ActorBig/ActorBig';
+import Preloader from '../../UI/Preloader/Preloader';
 
 const ActorPage = ({
   actor, setActor,
@@ -13,15 +14,19 @@ const ActorPage = ({
   const { actorId } = useParams();
   useEffect(() => {
     setActorLoad(true);
+    setActorCastLoad(true);
     setActor(actorId)
       .finally(() => setActorLoad(false));
-  }, [actorId]);
-  useEffect(() => {
-    setActorCastLoad(true);
     setActorCast(actorId)
       .finally(() => setActorCastLoad(false));
   }, [actorId]);
-  return <ActorBig actor={actor.actor} cast={actor.cast} />;
+  return (
+    <main className="main mainSingle">
+      {actor.isLoad || actor.isCastLoad
+        ? <Preloader className="preloader" />
+        : <ActorBig actor={actor.actor} cast={actor.cast} />}
+    </main>
+  );
 };
 
 const mapDispatchToProps = (dispatch) => {
