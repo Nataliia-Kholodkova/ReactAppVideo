@@ -8,7 +8,8 @@ import ShowPage from '../appPages/ShowPage/ShowPage';
 import ActorPage from '../appPages/ActorPage/ActorPage';
 import MainPage from '../appPages/MainPage/MainPage';
 
-const App = () => (
+const App = () => {
+  return (
     <div className={styles.root}>
       <Header />
       <>
@@ -19,9 +20,12 @@ const App = () => (
           <Route exact path="/search/shows/:query" render={() => <ShowsResults />} />
           <Route exact path="/shows/show/:showId" render={() => <ShowPage />} />
           <Route exact path="/actors/:actorId" render={() => <ActorPage />} />
+          {/* <Route exact path="/signin" render={() => <SignInPage />} />
+          <Route exact path="/signup" render={() => <SignUpPage />} /> */}
         </Switch>
       </>
-  </div>
-);
+    </div>
+  );
+};
 
 export default App;

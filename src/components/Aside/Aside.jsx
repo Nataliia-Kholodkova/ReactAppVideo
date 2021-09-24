@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { setFilterByRatingActionCreator, setFilterByRPremierDateActionCreator } from '../../redux/actionCreators/filtersActionCreators';
 import styles from './Aside.module.css';
 import Radio from '../UI/Radio/Radio';
-import BurgerButton from '../UI/BurgerButton/BurgerButton';
+import ArrowButton from '../UI/ArrowButton/ArrowButton';
 
 const Aside = ({ setRatingOrder, setPremierDateOrder }) => {
   const onChangeRadioDate = ({ target }) => {
@@ -22,7 +22,7 @@ const Aside = ({ setRatingOrder, setPremierDateOrder }) => {
 
   return (
     <aside className={`${styles.aside} ${isAsideOpened ? `${styles.opened}` : ''}`}>
-      <BurgerButton onClick={toggleAsideOpen} className="asideShow" />
+      <ArrowButton onClick={toggleAsideOpen} />
       <section className={styles.section}>
         <h3 className={styles.title}>Sort by premier date</h3>
         <Radio name="premierDate" value="random" title="Reset" checked onChange={onChangeRadioDate} />

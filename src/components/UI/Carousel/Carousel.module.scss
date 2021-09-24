@@ -24,16 +24,16 @@
   h3, p {
     @extend %reset;
     text-align: right;
-    font-size: 10px;
+    font-size: 8px;
   }
 
   h3 {
-    @include fontView(14px, 400);
-    margin-bottom: 15px;
+    @include fontView(12px, 400);
+    margin-bottom: 3px;
   }
 
   .small {
-    @include fontView(8px, 400);
+    font-weight: 400;
     font-style: italic;
   }
 }

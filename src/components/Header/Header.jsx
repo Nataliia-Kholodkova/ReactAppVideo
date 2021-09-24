@@ -7,21 +7,13 @@ import NavigationList from '../UI/NavigationList/NavigationList';
 import BurgerButton from '../UI/BurgerButton/BurgerButton';
 
 const Header = ({ query, setSearchQuery }) => {
-  const searchShowHandler = ({ target }) => {
-    const urlToPush = target.value
-      ? `/search/shows/${target.value}`
+  const searchShowHandler = (value) => {
+    const urlToPush = value
+      ? `/search/shows/${value}`
       : '/';
-    setSearchQuery(target.value);
+    setSearchQuery(value);
     hist.push(urlToPush);
   };
-
-  // const searchActorHandler = ({ target }) => {
-  //   const urlToPush = target.value
-  //     ? `/search/actors/${target.value}`
-  //     : '/';
-  //   setSearchActorsQuery(target.value);
-  //   hist.push(urlToPush);
-  // };
 
   const onMobileMenuButtonClick = () => {
     setMobileMenuOpened(!isMobileMenuOpened);
@@ -41,8 +33,6 @@ const Header = ({ query, setSearchQuery }) => {
           isMobileMenuOpened={isMobileMenuOpened}
           showQuery={query}
           searchShowHandler={searchShowHandler}
-          // actorsQuery={actorsQuery}
-          // searchActorHandler={searchActorHandler}
         />
       </nav>
     </header>
@@ -51,11 +41,9 @@ const Header = ({ query, setSearchQuery }) => {
 
 const mapDispatchToProps = (dispatch) => {
   const setSearchQuery = (query) => dispatch(setFilterByQueryActionCreator(query));
-  // const setSearchActorsQuery = (query) => dispatch(setFilterActorsByQueryActionCreator(query));
 
   return {
     setSearchQuery,
-    // setSearchActorsQuery
   };
 };
 
@@ -63,7 +51,6 @@ const mapStateToProps = (state) => {
   const { filters } = state;
   return {
     query: filters.searchQuery,
-    // actorsQuery: filters.actorSearchQuery
   };
 };
 

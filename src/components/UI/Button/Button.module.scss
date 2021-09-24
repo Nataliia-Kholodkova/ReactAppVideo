@@ -1,0 +1,33 @@
+@import '../../../mixins';
+@import '../../../variables';
+
+.button {
+  padding: 8px 15px;
+  margin-top: 15px;
+  text-align: center;
+  color: white;
+  font-weight: 700;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  @extend %transition;
+}
+
+.submit {
+  background-color: rgba($cyanColor, 0.7);
+  border: 1px solid $darkCyanColor;
+
+  &:hover {
+    background-color: $cyanColor;
+}
+}
+
+.reset {
+  border: 1px solid rgba($darkCyanColor, 0.7);
+
+  &:hover {
+    border-color: $darkCyanColor;
+}
+}

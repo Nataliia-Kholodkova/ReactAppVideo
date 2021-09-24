@@ -1,0 +1,54 @@
+@import '../../../mixins.scss';
+@import '../../../variables.scss';
+
+.button {
+  @extend %reset;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 10px;
+  margin: auto;
+  width: 40px;
+  height: 40px;
+  border: 1px solid transparent;
+  background-color: rgba($darkCyanColor, 0.3);
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  overflow: hidden;
+  @extend %transition;
+
+  svg {
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    fill: $darkCyanColor;
+    @extend %transition;
+  }
+
+  &:hover, &:focus {
+    border-color: $cyanColor;
+  }
+
+  @media screen and(min-width: 768px) {
+    display: none;
+  }
+}
+
+.button.close {
+  left: 270px;
+
+  svg {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+}
+}

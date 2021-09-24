@@ -1,0 +1,29 @@
+@import '../../../variables';
+@import '../../../mixins';
+
+.form {
+  width: 90%;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  box-shadow: 0 0 15px rgba($cyanColor, 0.3);
+  background-color: $darkColor;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+
+  @media screen and (min-width: 469px) {
+    width: 70%;
+  }
+
+  @media screen and (min-width: 678px) {
+    width: 50%;
+  }
+
+  @media screen and (min-width: 960px) {
+    width: 30%;
+  }
+}

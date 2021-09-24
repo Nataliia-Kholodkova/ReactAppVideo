@@ -50,22 +50,28 @@
   width: 100%;
 
   @media screen and (min-width: 768px) {
-    width: 30%;
+    width: fit-content;
   }
+}
+
+.navLink {
+  @extend %link;
+  padding: 10px 0;
+  font-weight: 400;
+  @extend %transition;
+
+  border-bottom: 1px solid transparent;
+
+    &:hover {
+    border-bottom-color: $darkCyanColor;
+    }
 }
 
 .navItemLink {
   width: 35%;
   text-align: right;
   margin-right: 20px;
-
-  .navLink {
-    border-bottom: 1px solid transparent;
-
-    &:hover {
-    border-bottom-color: $darkCyanColor;
-    }
-  }
+  cursor: pointer;
 
   @media screen and (min-width: 469px) {
     width: 15%;
@@ -77,13 +83,6 @@
   }
 }
 
-.navLink {
-  @extend %link;
-  padding: 10px 0;
-  font-weight: 400;
-  @extend %transition;
-}
-
-.navLincActive {
+.navLinkActive {
   color: $darkCyanColor;
 }

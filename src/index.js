@@ -6,12 +6,15 @@ import store from './redux/store';
 import './index.css';
 import App from './components/App/App';
 import reportWebVitals from './reportWebVitals';
+import { AuthContextProvider } from './context/userAuthContext';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <App />
+        <AuthContextProvider>
+          <App />
+        </AuthContextProvider>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

@@ -1,7 +1,9 @@
-// export const USER_IS_LOGGED_IN = 'USER_IS_LOGGED_IN';
-// export const USER_IS_SET_LOGGED_IN = 'USER_IS_SET_LOGGED_IN';
+export const USER_SET_AUTH_ERROR = 'USER_SET_AUTH_ERROR';
 export const USER_SET_USER = 'USER_SET_USER';
-// export const USER_GET_USER = 'USER_GET_USER';
+export const USER_SIGNIN_USER = 'USER_SIGNIN_USER';
+export const USER_SIGNUP_USER = 'USER_SIGNUP_USER';
+export const USER_SIGNOUT_USER = 'USER_SIGNOUT_USER';
+// export const USER_UNSET_USER = 'USER_UNSET_USER';
 
 export const SHOWS_SET_SHOWS = 'SHOWS_SET_SHOWS';
 export const SHOWS_GET_SHOWS = 'SHOWS_GET_SHOWS';
