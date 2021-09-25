@@ -4,10 +4,10 @@ const useSortByRatingShows = (shows, order) =>
     const newShows = [...shows];
     switch (order) {
       case 'asc':
-        newShows.sort((a, b) => b.rating.average - a.rating.average);
+        newShows.sort((a, b) => a.rating.average - b.rating.average);
         break;
       case 'desc':
-        newShows.sort((a, b) => a.rating.average - b.rating.average);
+        newShows.sort((a, b) => b.rating.average - a.rating.average);
         break;
       default:
         break;
@@ -22,15 +22,15 @@ const useSortByPremierDateShows = (shows, order) =>
       case 'asc':
         newShows.sort(
           (a, b) =>
-            new Date(b.premiered).getTime() -
-                        new Date(a.premiered).getTime()
+            new Date(a.premiered).getTime() -
+                        new Date(b.premiered).getTime()
         );
         break;
       case 'desc':
         newShows.sort(
           (a, b) =>
-            new Date(a.premiered).getTime() -
-                        new Date(b.premiered).getTime()
+            new Date(b.premiered).getTime() -
+                        new Date(a.premiered).getTime()
         );
         break;
       default:
