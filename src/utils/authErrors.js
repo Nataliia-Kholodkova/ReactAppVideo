@@ -23,6 +23,7 @@ const authErrors = {
     errorType: 'email',
     errorMessage: 'Enter email address'
   },
+
   'no-password': {
     errorType: 'password',
     errorMessage: 'Enter password'

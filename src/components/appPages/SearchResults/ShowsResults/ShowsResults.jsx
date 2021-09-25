@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { setSearchShowsIsLoadActionCreator, getSearchShowsActionCreator } from '../../../../redux/actionCreators/searchShowsActionCreators';
 import Aside from '../../../Aside/Aside';
 import Shows from '../../../Shows/Shows';
+import { setSearchShowsIsLoadActionCreator, getSearchShowsActionCreator } from '../../../../redux/actionCreators/searchShowsActionCreators';
 
 const ShowsPage = ({ showsState, query, setShowsLoad, setShows }) => {
   const { isLoad, shows } = showsState;
@@ -29,15 +29,11 @@ const ShowsPage = ({ showsState, query, setShowsLoad, setShows }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  const setShows = (query) => dispatch(getSearchShowsActionCreator(query));
-  const setShowsLoad = (flag) => dispatch(setSearchShowsIsLoadActionCreator(flag));
-
-  return {
-    setShows,
-    setShowsLoad
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setShows: (query) => dispatch(getSearchShowsActionCreator(query)),
+  setShowsLoad: (flag) => dispatch(setSearchShowsIsLoadActionCreator(flag))
+}
+);
 
 const mapStateToProps = (state) => {
   const { searchedShows, filters } = state;

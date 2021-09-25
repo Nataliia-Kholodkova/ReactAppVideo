@@ -13,13 +13,37 @@ const FormSignUp = ({ email, emailChangeHandler, password, passwordChangeHandler
   const validateForm = () => {
     if (password.length < 6 || passwordConfirm.length < 6) {
       setPasswordError('no-password');
+      return false;
     }
     if (password !== passwordConfirm) {
       setPasswordError('password-not-match');
+      return false;
     }
     if (!email.length) {
       setEmailError('no-email');
+      return false;
     }
+    return true;
+  };
+
+  const resetHandler = () => {
+    emailChangeHandler('');
+    passwordChangeHandler('');
+    passwordConfirmChangeHandler('');
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    if (!validateForm()) {
+      return;
+    };
+    if (passwordError || emailError || passwordConfirmError) {
+      return;
+    }
+    onSubmit(email, password)
+      .finally(() => {
+        resetHandler();
+      });
   };
 
   return (
@@ -28,14 +52,7 @@ const FormSignUp = ({ email, emailChangeHandler, password, passwordChangeHandler
       onClick={(event) => {
         event.stopPropagation();
       }}
-      onSubmit={(event) => {
-        event.preventDefault();
-        validateForm();
-        if (passwordError || emailError || passwordConfirmError) {
-          return;
-        }
-        onSubmit(email, password);
-      }}
+      onSubmit={(event) => submitHandler(event)}
     >
       <Input type="email" name="email" value={email} onChange={emailChangeHandler} placeholder="Email" authError={error} setAuthError={setError} fieldError={emailError} setFieldError={setEmailError}>
         <EmailSvg />
@@ -46,19 +63,8 @@ const FormSignUp = ({ email, emailChangeHandler, password, passwordChangeHandler
       <Input type="password" name="passwordConfirm" value={passwordConfirm} onChange={passwordConfirmChangeHandler} placeholder="Confirm password" authError={error} setAuthError={setError} fieldError={passwordConfirmError} setFieldError={setPasswordConfirmError}>
         <LockSvg />
       </Input>
-      <Button type="submit" text="SignUn" onClick={(event) => {
-        event.preventDefault();
-        validateForm();
-        if (passwordError || emailError || passwordConfirmError) {
-          return;
-        }
-        onSubmit(email, password);
-      }} className="submit" />
-      <Button type="reset" text="Reset" onClick={() => {
-        emailChangeHandler('');
-        passwordChangeHandler('');
-        passwordConfirmChangeHandler('');
-      }} className="reset" />
+      <Button type="submit" text="SignUp" onClick={(event) => submitHandler(event)} className="submit" />
+      <Button type="reset" text="Reset" onClick={() => resetHandler()} className="reset" />
     </form>
   );
 };

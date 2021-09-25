@@ -10,10 +10,16 @@ const getShows = (page) => {
 };
 
 const getCurrentShows = (date) => {
-  return HTTP_AXIOS.get(`schedule/web?date=${date}&country=`)
-    .then(data => data.data)
-    .then(data => data.map((item) => item._embedded.show))
-    .then(data => {
+  return Promise.all([
+    HTTP_AXIOS.get(`schedule/web?date=${date}&country=`)
+      .then(data => data.data)
+      .then(data => data.map((item) => item._embedded.show)),
+    HTTP_AXIOS.get('schedule')
+      .then(data => data.data)
+      .then(data => data.map((item) => item.show))
+  ])
+    .then((data) => [...data[0], ...data[1]])
+    .then((data) => {
       const ids = data.map(show => show.id);
       return data.filter((show, idx) => ids.indexOf(show.id) === idx);
     });

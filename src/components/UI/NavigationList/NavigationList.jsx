@@ -1,34 +1,16 @@
-import React, { useState, useContext } from 'react';
-import { connect } from 'react-redux';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import Input from '../Input/Input';
-import styles from './NavigationList.module.css';
 import SearchSvg from '../../Image/SVG/Search';
-import { signOutUserActionCreator } from '../../../redux/actionCreators/userActionCreators';
-import SignInPage from '../../appPages/SingInPage/SignInPage';
-import SignUpPage from '../../appPages/SignUpPage/SignUpPage';
-import SignOutPage from '../../appPages/SignOutPage/SignOutPage';
 import { AuthContext } from '../../../context/userAuthContext';
-import { logout } from '../../../firebaseConf/authUser';
+import styles from './NavigationList.module.css';
 
 const NavigationList = ({
   isMobileMenuOpened,
   showQuery,
   searchShowHandler,
 }) => {
-  const [isVisibleSignIn, setIsVisibleSignIn] = useState(false);
-  const [isVisibleSignUp, setIsVisibleSignUp] = useState(false);
-  const [isVisibleSignOut, setIsVisibleSignOut] = useState(false);
-  const [active, setActive] = useState(false);
   const { user } = useContext(AuthContext);
-
-  const onClichAuthLink = (event, fn, logOut = false) => {
-    event.preventDefault();
-    fn(true);
-    if (logOut) {
-      logout();
-    }
-  };
   return (
     <>
       <ul
@@ -59,59 +41,55 @@ const NavigationList = ({
         {!user?.uid && (
           <>
             <li className={`${styles.navItem} ${styles.navItemLink}`}>
-              <a
-                className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
-                onClick={(event) => {
-                  onClichAuthLink(event, setIsVisibleSignIn);
-                }}
+              <NavLink to={{
+                pathname: '/signin',
+                state: { modal: true }
+              }}
+              activeClassName={styles.navLinkActive}
+              className={styles.navLink}
               >
                 Sign In
-              </a>
+              </NavLink>
             </li>
             <li className={`${styles.navItem} ${styles.navItemLink}`}>
-              <a
-                className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
-                onClick={(event) => {
-                  onClichAuthLink(event, setIsVisibleSignUp);
-                }}
+              <NavLink to={{
+                pathname: '/signup',
+                state: { modal: true }
+              }}
+              activeClassName={styles.navLinkActive}
+              className={styles.navLink}
               >
                 Sign Up
-              </a>
+              </NavLink>
             </li>
           </>
         )}
         {user?.uid && (
           <>
             <li className={`${styles.navItem} ${styles.navItemLink}`}>
-              <a
-                className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
-                onClick={(event) => {
-                  onClichAuthLink(event, setIsVisibleSignOut, true);
-                }}
+              <NavLink to={{
+                pathname: '/signout',
+                state: { modal: true }
+              }}
+              activeClassName={styles.navLinkActive}
+              className={styles.navLink}
               >
                 Sign Out
-              </a>
+              </NavLink>
             </li>
-            <li className={styles.navItem}>
+            <li className={`${styles.navItem} ${styles.navItemLink}`}>
               <NavLink
                 to="/profile"
-                className={styles.navLink}
-                activeClassName={styles.navLinkActive}
+                className={styles.userLink}
+                activeClassName={styles.userLinkActive}
               >
-                Profile
+                {user.displayName}
               </NavLink>
             </li>
           </>)}
         </ul>
-      <SignInPage isVisible={isVisibleSignIn} setIsVisible={setIsVisibleSignIn} setLinkActive={setActive} />
-      <SignUpPage isVisible={isVisibleSignUp} setIsVisible={setIsVisibleSignUp} setLinkActive={setActive} />
-      <SignOutPage isVisible={isVisibleSignOut} setIsVisible= {setIsVisibleSignOut} setLinkActive={setActive} />
     </>
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  signout: () => dispatch(signOutUserActionCreator()),
-});
-
-export default connect(null, mapDispatchToProps)(NavigationList);
+export default NavigationList;

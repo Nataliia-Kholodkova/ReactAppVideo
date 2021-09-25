@@ -1,6 +1,4 @@
 import { combineReducers } from 'redux';
-import { firestoreReducer } from 'redux-firestore';
-import { firebaseReducer } from 'react-redux-firebase';
 import showsReducer from './showsReducer';
 import showReducer from './showReducer';
 import actorReducer from './actorReducer';
@@ -17,8 +15,6 @@ const rootReducer = combineReducers({
   actor: actorReducer,
   user: userReducer,
   filters: filtersReducer,
-  firestore: firestoreReducer,
-  firebase: firebaseReducer
 });
 
 export default rootReducer;

@@ -17,15 +17,25 @@ const FormSignIn = ({ email, emailChangeHandler, password, passwordChangeHandler
       setEmailError('no-email');
     }
   };
+  const resetHandler = () => {
+    emailChangeHandler('');
+    passwordChangeHandler('');
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    validateForm();
+    if (passwordError || emailError) {
+      return;
+    }
+    onSubmit(email, password)
+      .finally(() => {
+        resetHandler();
+      });
+  };
+
   return (
-    <form className={styles.form} onSubmit={(event) => {
-      event.preventDefault();
-      validateForm();
-      if (passwordError || emailError) {
-        return;
-      }
-      onSubmit(email, password);
-    }} onClick={(event) => {
+    <form className={styles.form} onSubmit={(event) => submitHandler(event)} onClick={(event) => {
       event.stopPropagation();
     }}>
       <Input type="email" name="email" value={email} onChange={emailChangeHandler} placeholder="Email" authError={error} setAuthError={setError} fieldError={emailError} setFieldError={setEmailError}>
@@ -34,18 +44,8 @@ const FormSignIn = ({ email, emailChangeHandler, password, passwordChangeHandler
       <Input type="password" name="password" value={password} onChange={passwordChangeHandler} placeholder="Password" authError={error} setAuthError={setError} fieldError={passwordError} setFieldError={setPasswordError}>
         <LockSvg />
       </Input>
-      <Button type="submit" text="SignIn" onClick={(event) => {
-        event.preventDefault();
-        validateForm();
-        if (passwordError || emailError) {
-          return;
-        }
-        onSubmit(email, password);
-      }} className="submit" />
-      <Button type="reset" text="Reset" onClick={() => {
-        emailChangeHandler('');
-        passwordChangeHandler('');
-      }} className="reset" />
+      <Button type="submit" text="SignIn" onClick={(event) => submitHandler(event)} className="submit" />
+      <Button type="reset" text="Reset" onClick={() => resetHandler()} className="reset" />
     </form>
   );
 };

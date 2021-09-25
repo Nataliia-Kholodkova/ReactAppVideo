@@ -1,8 +1,12 @@
-import { SHOWS_SET_SHOWS, SHOWS_SET_IS_LOAD, SHOWS_SET_PAGE, SHOWS_SOULD_LOAD } from '../constants';
+import { SHOWS_SET_SHOWS, SHOWS_SET_IS_LOAD, SHOWS_SET_PAGE, SHOWS_SOULD_LOAD, SHOWS_SET_LAST_INDEX } from '../constants';
 import { getShows } from '../../utils/getDataFromServer';
 
 const setShowsActionCreator = (payload) => ({
   type: SHOWS_SET_SHOWS, payload
+});
+
+const setShowsLastIndexActionCreator = (payload) => ({
+  type: SHOWS_SET_LAST_INDEX, payload
 });
 
 const setShowsIsLoadActionCreator = (payload) => ({
@@ -24,4 +28,4 @@ const getShowsActionCreator = (page) => {
   };
 };
 
-export { setShowsActionCreator, setShowsIsLoadActionCreator, setShowsPageActionCreator, getShowsActionCreator, setShowsShouldLoadActionCreator };
+export { setShowsActionCreator, setShowsIsLoadActionCreator, setShowsPageActionCreator, getShowsActionCreator, setShowsShouldLoadActionCreator, setShowsLastIndexActionCreator };

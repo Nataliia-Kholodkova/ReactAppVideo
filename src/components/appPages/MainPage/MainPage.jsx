@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { setFilterByGenreActionCreator } from '../../../redux/actionCreators/filtersActionCreators';
-import { setCurrentShowsIsLoadActionCreator, getCurrentShowsActionCreator } from '../../../redux/actionCreators/currentShowsActionCreators';
-import { useFilteredByGenreShows, useSortByPremierDateShows } from '../../../customHooks/useFilterShows';
-import genreNames from '../../../utils/genres';
 import Line from '../../ShowsLine/ShowsLine';
 import Preloader from '../../UI/Preloader/Preloader';
+import { useFilteredByGenreShows, useSortByPremierDateShows } from '../../../customHooks/useFilterShows';
+import { setFilterByGenreActionCreator } from '../../../redux/actionCreators/filtersActionCreators';
+import { setCurrentShowsIsLoadActionCreator, getCurrentShowsActionCreator } from '../../../redux/actionCreators/currentShowsActionCreators';
+import genreNames from '../../../utils/genres';
 
 const MainPage = ({ shows, isLoad, setShows, setShowsLoad, setGenre }) => {
   const date = new Date().toISOString().split('T')[0];

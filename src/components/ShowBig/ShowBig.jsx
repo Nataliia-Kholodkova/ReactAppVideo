@@ -1,10 +1,10 @@
 import React from 'react';
 import Parser from 'html-react-parser';
-import styles from './ShowBig.module.css';
+import CarouselConponent from '../UI/Carousel/CarouselComponent';
 import Image from '../Image/Image';
 import noImg from '../../assets/img/no-image.svg';
 import calculateStars from '../../utils/calculateRatingStars';
-import CarouselConponent from '../UI/Carousel/CarouselComponent';
+import styles from './ShowBig.module.css';
 
 const ShowBig = ({ show }) => {
   if (Object.keys(show).length === 0) {

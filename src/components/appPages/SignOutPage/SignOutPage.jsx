@@ -1,37 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import styles from './SignOutPage.module.css';
+import Button from '../../UI/Button/Button';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '../../../firebaseConf/firebaseConf';
+import { logout } from '../../../firebaseConf/authUser';
+import styles from './SignOutPage.module.css';
 
-const SignOutPage = ({ setIsVisible, isVisible, setLinkActive }) => {
+const SignOutPage = () => {
+  const [visible, setVisible] = useState(true);
+  const [showButton, setShowButton] = useState(true);
   const classList = [styles.modal];
-  if (isVisible) {
+  if (visible) {
     classList.push(styles.visible);
   }
   const hist = useHistory();
 
   useEffect(() => {
-    onAuthStateChanged(firebaseAuth, (user) => {
+    const subscr = onAuthStateChanged(firebaseAuth, (user) => {
       if (!user) {
         setTimeout(() => {
-          setLinkActive(false);
-          setIsVisible(false);
+          setVisible(false);
           hist.push('/');
         }, 1000);
       }
     });
+    return subscr();
   });
   return (
-    <main className="main mainSingle">
-      <div className={classList.join(' ')} onClick={() => {
-        setIsVisible(false);
-      }}>
-        <div className={styles.inner}>
-          <p>You have successfully signed out</p>
-        </div>
+    <div className={classList.join(' ')} onClick={() => {
+      setVisible(false);
+    }}>
+      <div className={styles.inner}>
+        {showButton && <Button type="button" text="Sign Out" onClick={() => {
+          logout();
+          setShowButton(false);
+        }} className="submit" />}
+        {!showButton && <p>You have successfully signed out</p>}
       </div>
-    </main>
+    </div>
   );
 };
 

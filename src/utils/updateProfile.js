@@ -5,7 +5,7 @@ const updatePhoto = (user, photo) => {
   if (photo) {
     const ext = photo.name.split('.').pop();
     const storageRef = ref(getStorage(), `userProfile/${user.uid}.${ext}`);
-    uploadBytes(storageRef, photo)
+    return uploadBytes(storageRef, photo)
       .then(() => {
         return getDownloadURL(storageRef);
       })
@@ -15,6 +15,7 @@ const updatePhoto = (user, photo) => {
         });
       });
   }
+  return Promise.resolve();
 };
 
 const createInitials = (firstName, lastName) => `${firstName ? `${firstName[0].toUpperCase()}` : ''}${lastName ? `${lastName[0].toUpperCase()}` : ''}`;

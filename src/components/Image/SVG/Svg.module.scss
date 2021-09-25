@@ -12,3 +12,25 @@
     width: 20px;
   }
 }
+
+.usual, .favourite {
+  width: 20px;
+  stroke: $darkCyanColor;
+  @extend %transition;
+}
+
+.usual {
+  fill: rgba($cyanColor, 0.4);
+
+  &:hover {
+    fill: rgba($cyanColor, 0.6);
+  }
+}
+
+.favourite {
+  fill: rgba($cyanColor, 0.8);
+
+  &:hover {
+    fill: rgba($cyanColor, 1);
+  }
+}

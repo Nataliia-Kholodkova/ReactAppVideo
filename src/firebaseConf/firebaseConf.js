@@ -19,15 +19,3 @@ export {
   firebaseAuth,
   firebaseFirestore,
 };
-
-// import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
-
-// const db = getFirestore(firebaseApp);
-
-// const q = query(collection(db, "cities"), where("capital", "==", true));
-
-// const querySnapshot = await getDocs(q);
-// querySnapshot.forEach((doc) => {
-//   // doc.data() is never undefined for query doc snapshots
-//   console.log(doc.id, " => ", doc.data());
-// });

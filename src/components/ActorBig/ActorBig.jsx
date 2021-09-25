@@ -1,10 +1,10 @@
 import React from 'react';
+import CarouselConponent from '../UI/Carousel/CarouselComponent';
 import Image from '../Image/Image';
 import maleImg from '../../assets/img/avatar_male.png';
 import femaleImg from '../../assets/img/avatar_female.png';
 import 'react-multi-carousel/lib/styles.css';
 import styles from './ActorBig.module.css';
-import CarouselConponent from '../UI/Carousel/CarouselComponent';
 
 const ActorBig = ({ actor, cast }) => {
   if (Object.keys(actor).length === 0 || Object.keys(cast).length === 0) {

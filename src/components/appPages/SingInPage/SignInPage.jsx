@@ -1,33 +1,38 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import { connect } from 'react-redux';
 import FormSignIn from '../../UI/Form/FormSingIn';
-import styles from './LoginPage.module.css';
-import { signInUserActionCreator, setUserAuthError } from '../../../redux/actionCreators/userActionCreators';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '../../../firebaseConf/firebaseConf';
+import { signInUserActionCreator, setUserAuthError } from '../../../redux/actionCreators/userActionCreators';
+import styles from './LoginPage.module.css';
 
-const SignInPage = ({ setLogin, authError, setAuthError, setIsVisible, isVisible, setLinkActive }) => {
+const SignInPage = ({ setLogin, authError, setAuthError }) => {
+  const hist = useHistory();
+  const [visible, setVisible] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const classList = [styles.modal];
-  if (isVisible) {
+  if (visible) {
     classList.push(styles.visible);
   }
 
   useEffect(() => {
-    onAuthStateChanged(firebaseAuth, (user) => {
+    const subscr = onAuthStateChanged(firebaseAuth, (user) => {
       if (user && !authError) {
-        setLinkActive(false);
-        setIsVisible(false);
+        setVisible(false);
+        hist.goBack();
       }
     });
+    return subscr();
   });
 
   return (
     <main className="main mainSingle">
       <div className={classList.join(' ')} onClick={() => {
-        setIsVisible(false);
+        setVisible(false);
+        hist.goBack();
       }}>
         <FormSignIn email={email} emailChangeHandler={setEmail} password={password} passwordChangeHandler={setPassword} onSubmit={setLogin} error={authError} setError={setAuthError} />
       </div>

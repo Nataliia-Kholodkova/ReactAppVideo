@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setFilterByQueryActionCreator } from '../../redux/actionCreators/filtersActionCreators';
-import styles from './Header.module.css';
 import NavigationList from '../UI/NavigationList/NavigationList';
 import BurgerButton from '../UI/BurgerButton/BurgerButton';
+import { setFilterByQueryActionCreator } from '../../redux/actionCreators/filtersActionCreators';
+import styles from './Header.module.css';
 
 const Header = ({ query, setSearchQuery }) => {
   const searchShowHandler = (value) => {
@@ -39,13 +39,9 @@ const Header = ({ query, setSearchQuery }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  const setSearchQuery = (query) => dispatch(setFilterByQueryActionCreator(query));
-
-  return {
-    setSearchQuery,
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setSearchQuery: (query) => dispatch(setFilterByQueryActionCreator(query))
+});
 
 const mapStateToProps = (state) => {
   const { filters } = state;

@@ -1,6 +1,6 @@
 import React from 'react';
-import styles from './Button.module.css';
 import ArrowSvg from '../../Image/SVG/Arrow';
+import styles from './Button.module.css';
 
 const ArrowButton = ({ onClick }) => {
   const toggleClose = (event, func) => {

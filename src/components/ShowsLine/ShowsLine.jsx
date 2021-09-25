@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import styles from './ShowsLine.module.css';
 import CarouselConponent from '../UI/Carousel/CarouselComponent';
+import styles from './ShowsLine.module.css';
 
 const Line = ({ shows, genre, setGenre, isLoad }) => {
-  if (isLoad) {
+  if (isLoad || shows.length === 0) {
     return null;
   }
   return (

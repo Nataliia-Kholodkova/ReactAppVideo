@@ -1,1 +1,1 @@
-.star{fill:rgba(0,255,245,.5)}.star.active{fill:#00fff5}@media screen and (min-width: 960px){.star{width:20px}}
+.usual,.favourite{transition:.3s linear;-webkit-transition:.3s linear;-moz-transition:.3s linear;-ms-transition:.3s linear;-o-transition:.3s linear}.star{fill:rgba(0,255,245,.5)}.star.active{fill:#00fff5}@media screen and (min-width: 960px){.star{width:20px}}.usual,.favourite{width:20px;stroke:#00adb5}.usual{fill:rgba(0,255,245,.4)}.usual:hover{fill:rgba(0,255,245,.6)}.favourite{fill:rgba(0,255,245,.8)}.favourite:hover{fill:#00fff5}

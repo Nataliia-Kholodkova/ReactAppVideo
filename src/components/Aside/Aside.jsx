@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { setFilterByRatingActionCreator, setFilterByRPremierDateActionCreator } from '../../redux/actionCreators/filtersActionCreators';
-import styles from './Aside.module.css';
 import Radio from '../UI/Radio/Radio';
 import ArrowButton from '../UI/ArrowButton/ArrowButton';
+import { setFilterByRatingActionCreator, setFilterByRPremierDateActionCreator } from '../../redux/actionCreators/filtersActionCreators';
+import styles from './Aside.module.css';
 
 const Aside = ({ setRatingOrder, setPremierDateOrder }) => {
   const onChangeRadioDate = ({ target }) => {

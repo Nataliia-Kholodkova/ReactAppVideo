@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setShowIsLoadActionCreator, getShowActionCreator } from '../../../redux/actionCreators/showActionCreators';
 import ShowBig from '../../ShowBig/ShowBig';
+import { setShowIsLoadActionCreator, getShowActionCreator } from '../../../redux/actionCreators/showActionCreators';
 
 const ShowPage = ({ show, isLoad, setShow, setShowLoad }) => {
   const { showId } = useParams();
@@ -18,15 +18,10 @@ const ShowPage = ({ show, isLoad, setShow, setShowLoad }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  const setShow = (id) => dispatch(getShowActionCreator(id));
-  const setShowLoad = (flag) => dispatch(setShowIsLoadActionCreator(flag));
-
-  return {
-    setShow,
-    setShowLoad
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setShow: (id) => dispatch(getShowActionCreator(id)),
+  setShowLoad: (flag) => dispatch(setShowIsLoadActionCreator(flag)),
+});
 
 const mapStateToProps = (state) => ({ ...state.show });
 

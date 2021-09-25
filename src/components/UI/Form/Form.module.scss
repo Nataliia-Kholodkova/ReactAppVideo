@@ -27,3 +27,25 @@
     width: 30%;
   }
 }
+
+.label {
+  width: 100%;
+  padding: 5px 0;
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    span {
+      margin-right: 10px;
+    }
+}
+
+.select {
+  width: 43%;
+  padding: 7px;
+  background-color: $darkColor;
+  color: $cyanColor;
+  border: none;
+  border-bottom: 1px solid  white;
+}

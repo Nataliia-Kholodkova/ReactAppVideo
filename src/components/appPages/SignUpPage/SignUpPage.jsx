@@ -1,40 +1,53 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router';
 import { connect } from 'react-redux';
 import FormSignUp from '../../UI/Form/FormSignUp';
-import styles from './SignUpPage.module.css';
-import { signUpUserActionCreator, setUserAuthError } from '../../../redux/actionCreators/userActionCreators';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '../../../firebaseConf/firebaseConf';
-import UpdateProfile from '../UpdateProfile/UpdateProfile';
+import { signUpUserActionCreator, setUserAuthError } from '../../../redux/actionCreators/userActionCreators';
+import styles from './SignUpPage.module.css';
 
-const SignUpPage = ({ authError, setSignup, setAuthError, setIsVisible, isVisible, setLinkActive }) => {
+const SignUpPage = ({ authError, setSignup, setAuthError }) => {
+  const hist = useHistory();
+  const [visible, setVisible] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [updateProfileShow, setUpdateProfileShow] = useState('false');
   const classList = [styles.modal];
-  if (isVisible) {
+
+  if (visible) {
     classList.push(styles.visible);
   }
 
   useEffect(() => {
-    onAuthStateChanged(firebaseAuth, (user) => {
+    const subscr = onAuthStateChanged(firebaseAuth, (user) => {
       if (user && !authError) {
-        setLinkActive(false);
-        setIsVisible(false);
-        setUpdateProfileShow(true);
+        setVisible(false);
+        hist.push({
+          pathname: '/updateProfile',
+          state: { modal: true }
+        });
       }
     });
+    return subscr();
   });
+
   return (
-    <main className="main mainSingle">
-      <div className={classList.join(' ')} onClick={() => {
-        setIsVisible(false);
-      }}>
-        <FormSignUp email={email} emailChangeHandler={setEmail} password={password} passwordChangeHandler={setPassword} passwordConfirm={passwordConfirm} passwordConfirmChangeHandler={setPasswordConfirm} onSubmit={setSignup} error={authError} setError={setAuthError} />
-        {updateProfileShow && <UpdateProfile setIsVisible={setUpdateProfileShow} isVisible={updateProfileShow} />}
-      </div>
-    </main>
+    <div className={classList.join(' ')} onClick={() => {
+      setVisible(false);
+      hist.goBack();
+    }}>
+      <FormSignUp
+        email={email}
+        emailChangeHandler={setEmail}
+        password={password}
+        passwordChangeHandler={setPassword}
+        passwordConfirm={passwordConfirm}
+        passwordConfirmChangeHandler={setPasswordConfirm}
+        onSubmit={setSignup}
+        error={authError}
+        setError={setAuthError} />
+    </div>
   );
 };
 

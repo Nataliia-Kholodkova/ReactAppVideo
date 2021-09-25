@@ -1,6 +1,6 @@
 import React from 'react';
-import spinner from '../../../assets/img/loader.svg';
 import Image from '../../Image/Image';
+import spinner from '../../../assets/img/loader.svg';
 import styles from './Preloader.module.css';
 
 const Preloader = ({ className }) => (

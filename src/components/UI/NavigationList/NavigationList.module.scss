@@ -68,21 +68,53 @@
 }
 
 .navItemLink {
-  width: 35%;
+  width: fit-content;
   text-align: right;
   margin-right: 20px;
   cursor: pointer;
 
-  @media screen and (min-width: 469px) {
-    width: 15%;
-  }
-
   @media screen and (min-width: 768px) {
-    width: 10%;
     text-align: center;
   }
 }
 
 .navLinkActive {
   color: $darkCyanColor;
+}
+
+.userLink {
+  @extend %link;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  text-align: center;
+  font-weight: 400;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  background-color: rgba($darkCyanColor, 0.5);
+  @extend %transition;
+
+  &:hover {
+    background-color: rgba($darkCyanColor, 0.8);
+  }
+}
+
+.userLinkActive {
+  background-color: rgba($darkCyanColor, 1);
+}
+
+.link {
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  background-color: rgba($cyanColor, 0.6);
+
+  &:hover {
+    background-color: rgba($cyanColor, 0.8);
+  }
 }
