@@ -1,19 +1,26 @@
-import { USER_SET_USER, USER_SET_AUTH_ERROR } from '../constants';
+import { USER_SET_AUTH_ERROR, USER_SET_PROFILE_PHOTO_ERROR, USER_SET_PROFILE_INITIALS_ERROR, USER_SET_PROFILE_DATA_ERROR } from '../constants';
 
 const initialState = {
-  user: null,
-  error: null,
+  authError: null,
+  photoError: null,
+  initialsError: null,
+  profileError: null,
 };
 const userReducer = (state = initialState, action) => {
   const newState = { ...state };
   const { type, payload } = action;
   switch (type) {
-    case USER_SET_USER:
-      newState.user = payload ? { ...newState.user, ...payload } : payload;
-      newState.error = null;
-      break;
     case USER_SET_AUTH_ERROR:
-      newState.error = payload;
+      newState.authError = payload;
+      break;
+    case USER_SET_PROFILE_PHOTO_ERROR:
+      newState.photoError = payload;
+      break;
+    case USER_SET_PROFILE_INITIALS_ERROR:
+      newState.initialsError = payload;
+      break;
+    case USER_SET_PROFILE_DATA_ERROR:
+      newState.profileError = payload;
       break;
     default:
       break;

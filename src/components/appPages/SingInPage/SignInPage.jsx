@@ -6,7 +6,7 @@ import { signInUserActionCreator, setUserAuthError } from '../../../redux/action
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '../../../firebaseConf/firebaseConf';
 
-const SignInPage = ({ setLogin, error, setError, setIsVisible, isVisible, setLincActive }) => {
+const SignInPage = ({ setLogin, authError, setAuthError, setIsVisible, isVisible, setLinkActive }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -17,8 +17,8 @@ const SignInPage = ({ setLogin, error, setError, setIsVisible, isVisible, setLin
 
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
-      if (user && !error) {
-        setLincActive(false);
+      if (user && !authError) {
+        setLinkActive(false);
         setIsVisible(false);
       }
     });
@@ -29,20 +29,20 @@ const SignInPage = ({ setLogin, error, setError, setIsVisible, isVisible, setLin
       <div className={classList.join(' ')} onClick={() => {
         setIsVisible(false);
       }}>
-        <FormSignIn email={email} emailChangeHandler={setEmail} password={password} passwordChangeHandler={setPassword} onSubmit={setLogin} error={error} setError={setError} />
+        <FormSignIn email={email} emailChangeHandler={setEmail} password={password} passwordChangeHandler={setPassword} onSubmit={setLogin} error={authError} setError={setAuthError} />
       </div>
     </main>
   );
 };
 
 const mapStateToProps = (state) => ({
-  error: state.user.error,
+  authError: state.user.authError,
 });
 
 const mapDispatchToProps = (dispatch) => (
   {
     setLogin: (email, password) => dispatch(signInUserActionCreator(email, password)),
-    setError: (error) => dispatch(setUserAuthError(error))
+    setAuthError: (error) => dispatch(setUserAuthError(error))
   });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignInPage);

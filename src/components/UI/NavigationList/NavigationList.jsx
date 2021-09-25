@@ -15,13 +15,13 @@ const NavigationList = ({
   isMobileMenuOpened,
   showQuery,
   searchShowHandler,
-  signout,
 }) => {
   const [isVisibleSignIn, setIsVisibleSignIn] = useState(false);
   const [isVisibleSignUp, setIsVisibleSignUp] = useState(false);
   const [isVisibleSignOut, setIsVisibleSignOut] = useState(false);
   const [active, setActive] = useState(false);
-  const user = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+
   const onClichAuthLink = (event, fn, logOut = false) => {
     event.preventDefault();
     fn(true);
@@ -58,43 +58,54 @@ const NavigationList = ({
         </li>
         {!user?.uid && (
           <>
-          <li className={`${styles.navItem} ${styles.navItemLink}`}>
-            <a
-              className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
+            <li className={`${styles.navItem} ${styles.navItemLink}`}>
+              <a
+                className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
                 onClick={(event) => {
                   onClichAuthLink(event, setIsVisibleSignIn);
                 }}
-            >
-              Sign In
-            </a>
-          </li>
-        <li className={`${styles.navItem} ${styles.navItemLink}`}>
-            <a
-              className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
-              onClick={(event) => {
-                onClichAuthLink(event, setIsVisibleSignUp);
-              }}
-            >
-              Sign Up
-            </a>
-          </li>
-            </>
+              >
+                Sign In
+              </a>
+            </li>
+            <li className={`${styles.navItem} ${styles.navItemLink}`}>
+              <a
+                className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
+                onClick={(event) => {
+                  onClichAuthLink(event, setIsVisibleSignUp);
+                }}
+              >
+                Sign Up
+              </a>
+            </li>
+          </>
         )}
         {user?.uid && (
-          <li className={`${styles.navItem} ${styles.navItemLink}`}>
-            <a
-              className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
-              onClick={(event) => {
-                onClichAuthLink(event, setIsVisibleSignOut, true);
-              }}
-            >
-              Sign Out
-            </a>
-          </li>)}
+          <>
+            <li className={`${styles.navItem} ${styles.navItemLink}`}>
+              <a
+                className={`${styles.navLink} ${active ? styles.navLinkActive : ''}`}
+                onClick={(event) => {
+                  onClichAuthLink(event, setIsVisibleSignOut, true);
+                }}
+              >
+                Sign Out
+              </a>
+            </li>
+            <li className={styles.navItem}>
+              <NavLink
+                to="/profile"
+                className={styles.navLink}
+                activeClassName={styles.navLinkActive}
+              >
+                Profile
+              </NavLink>
+            </li>
+          </>)}
         </ul>
-      <SignInPage isVisible={isVisibleSignIn} setIsVisible={setIsVisibleSignIn} setLincActive={setActive} />
-      <SignUpPage isVisible={isVisibleSignUp} setIsVisible={setIsVisibleSignUp} setLincActive={setActive} />
-      <SignOutPage isVisible={isVisibleSignOut} setIsVisible= {setIsVisibleSignOut} setLincActive={setActive} />
+      <SignInPage isVisible={isVisibleSignIn} setIsVisible={setIsVisibleSignIn} setLinkActive={setActive} />
+      <SignUpPage isVisible={isVisibleSignUp} setIsVisible={setIsVisibleSignUp} setLinkActive={setActive} />
+      <SignOutPage isVisible={isVisibleSignOut} setIsVisible= {setIsVisibleSignOut} setLinkActive={setActive} />
     </>
   );
 };

@@ -5,11 +5,13 @@ import styles from './SignUpPage.module.css';
 import { signUpUserActionCreator, setUserAuthError } from '../../../redux/actionCreators/userActionCreators';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '../../../firebaseConf/firebaseConf';
+import UpdateProfile from '../UpdateProfile/UpdateProfile';
 
-const SignUpPage = ({ error, setSignup, setError, setIsVisible, isVisible, setLincActive }) => {
+const SignUpPage = ({ authError, setSignup, setAuthError, setIsVisible, isVisible, setLinkActive }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [updateProfileShow, setUpdateProfileShow] = useState('false');
   const classList = [styles.modal];
   if (isVisible) {
     classList.push(styles.visible);
@@ -17,9 +19,10 @@ const SignUpPage = ({ error, setSignup, setError, setIsVisible, isVisible, setLi
 
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
-      if (user && !error) {
-        setLincActive(false);
+      if (user && !authError) {
+        setLinkActive(false);
         setIsVisible(false);
+        setUpdateProfileShow(true);
       }
     });
   });
@@ -28,20 +31,21 @@ const SignUpPage = ({ error, setSignup, setError, setIsVisible, isVisible, setLi
       <div className={classList.join(' ')} onClick={() => {
         setIsVisible(false);
       }}>
-        <FormSignUp email={email} emailChangeHandler={setEmail} password={password} passwordChangeHandler={setPassword} passwordConfirm={passwordConfirm} passwordConfirmChangeHandler={setPasswordConfirm} onSubmit={setSignup} setError={setError} error={error} />
+        <FormSignUp email={email} emailChangeHandler={setEmail} password={password} passwordChangeHandler={setPassword} passwordConfirm={passwordConfirm} passwordConfirmChangeHandler={setPasswordConfirm} onSubmit={setSignup} error={authError} setError={setAuthError} />
+        {updateProfileShow && <UpdateProfile setIsVisible={setUpdateProfileShow} isVisible={updateProfileShow} />}
       </div>
     </main>
   );
 };
 
 const mapStateToProps = (state) => ({
-  error: state.user.error,
+  authError: state.user.authError,
 });
 
 const mapDispatchToProps = (dispatch) => (
   {
     setSignup: (email, password) => dispatch(signUpUserActionCreator(email, password)),
-    setError: (error) => dispatch(setUserAuthError(error))
+    setAuthError: (error) => dispatch(setUserAuthError(error))
   });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);

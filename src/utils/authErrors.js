@@ -18,6 +18,18 @@ const authErrors = {
   'wrong-password': {
     errorType: 'password',
     errorMessage: 'Invalid password',
+  },
+  'no-email': {
+    errorType: 'email',
+    errorMessage: 'Enter email address'
+  },
+  'no-password': {
+    errorType: 'password',
+    errorMessage: 'Enter password'
+  },
+  'password-not-match': {
+    errorType: 'password',
+    errorMessage: 'Password does not match'
   }
 };
 

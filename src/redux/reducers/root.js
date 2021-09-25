@@ -3,7 +3,6 @@ import { firestoreReducer } from 'redux-firestore';
 import { firebaseReducer } from 'react-redux-firebase';
 import showsReducer from './showsReducer';
 import showReducer from './showReducer';
-// import actorsReducer from './actorsReducer';
 import actorReducer from './actorReducer';
 import filtersReducer from './filtersReducer';
 import searchShowsReducer from './searchShowsReducer';
@@ -15,7 +14,6 @@ const rootReducer = combineReducers({
   currentShows: currentShowsReducer,
   searchedShows: searchShowsReducer,
   show: showReducer,
-  // actors: actorsReducer,
   actor: actorReducer,
   user: userReducer,
   filters: filtersReducer,

@@ -1,21 +1,24 @@
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import styles from './SignOutPage.module.css';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '../../../firebaseConf/firebaseConf';
 
-const SignOutPage = ({ setIsVisible, isVisible, setLincActive }) => {
+const SignOutPage = ({ setIsVisible, isVisible, setLinkActive }) => {
   const classList = [styles.modal];
   if (isVisible) {
     classList.push(styles.visible);
   }
+  const hist = useHistory();
 
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
       if (!user) {
         setTimeout(() => {
-          setLincActive(false);
+          setLinkActive(false);
           setIsVisible(false);
-        }, 5000);
+          hist.push('/');
+        }, 1000);
       }
     });
   });

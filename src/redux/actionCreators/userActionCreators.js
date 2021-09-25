@@ -1,46 +1,10 @@
-import { USER_SET_AUTH_ERROR, USER_SET_USER } from '../constants';
+import { USER_SET_AUTH_ERROR, USER_SET_PROFILE_INITIALS_ERROR, USER_SET_PROFILE_DATA_ERROR, USER_SET_PROFILE_PHOTO_ERROR } from '../constants';
 import { signUp, signIn, logout } from '../../firebaseConf/authUser';
-import { doc, setDoc, getDoc, collection } from 'firebase/firestore';
-import { onAuthStateChanged } from 'firebase/auth';
-import { firebaseFirestore, firebaseAuth } from '../../firebaseConf/firebaseConf';
+import { doc, setDoc, collection, updateDoc } from 'firebase/firestore';
+import { firebaseFirestore } from '../../firebaseConf/firebaseConf';
+import { updateProfile } from 'firebase/auth';
 import authFields from '../../utils/authFields';
-
-const currentUserHandler = (dispatch) => {
-  onAuthStateChanged(firebaseAuth, (user) => {
-    if (user) {
-      dispatch({
-        type: USER_SET_USER,
-        payload: {
-          id: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          phoneNumber: user.phoneNumber,
-          photoURL: user.photoURL
-        }
-      });
-    } else {
-      dispatch({ type: USER_SET_USER, payload: null });
-    }
-  });
-};
-
-const getUserProfile = (dispatch) => {
-  onAuthStateChanged(firebaseAuth, (user) => {
-    if (user) {
-      const docRef = doc(firebaseFirestore, 'users', user.uid);
-      getDoc(docRef)
-        .then((data) => {
-          if (data.exists()) {
-            dispatch({ type: USER_SET_USER, payload: data.data() });
-          }
-        });
-    }
-  });
-};
-
-const setUserActionCreator = (payload) => ({
-  type: USER_SET_USER, payload,
-});
+import { updatePhoto, createInitials, constructFields } from '../../utils/updateProfile';
 
 const setUserAuthError = (payload) => ({ type: USER_SET_AUTH_ERROR, payload });
 
@@ -51,8 +15,6 @@ const signUpUserActionCreator = (email, password) => {
         const usersCollection = doc(collection(firebaseFirestore, 'users'), user.uid);
         setDoc(usersCollection, authFields);
       })
-      .then(() => currentUserHandler(dispatch))
-      .then(() => getUserProfile(dispatch))
       .catch((error) => dispatch({ type: USER_SET_AUTH_ERROR, payload: error.message }));
   };
 };
@@ -60,10 +22,6 @@ const signUpUserActionCreator = (email, password) => {
 const signInUserActionCreator = (email, password) => {
   return (dispatch) => {
     return signIn(email, password)
-      .then(() => {
-        currentUserHandler(dispatch);
-      })
-      .then((uid) => getUserProfile(dispatch, uid))
       .catch((error) => {
         dispatch({ type: USER_SET_AUTH_ERROR, payload: error.message });
       });
@@ -71,12 +29,40 @@ const signInUserActionCreator = (email, password) => {
 };
 
 const signOutUserActionCreator = () => {
+  logout();
+};
+
+const updateProfilePhotoActionCreator = (user, photo) => {
   return (dispatch) => {
-    return logout()
-      .then(() => {
-        currentUserHandler(dispatch);
-      });
+    updatePhoto(user, photo)
+      .catch((error) => dispatch({ type: USER_SET_PROFILE_PHOTO_ERROR, payload: error.message }));
   };
 };
 
-export { setUserActionCreator, signUpUserActionCreator, signInUserActionCreator, signOutUserActionCreator, setUserAuthError };
+const updateProfileInitialsActionCreator = (firstName, lastName, user) => {
+  return (dispatch) => {
+    const initials = createInitials(firstName, lastName);
+    if (initials) {
+      updateProfile(user, {
+        displayName: initials,
+      })
+        .catch((error) => dispatch({ type: USER_SET_PROFILE_INITIALS_ERROR, payload: error.message }));
+    }
+  };
+};
+
+const updateUserProfileData = (user, firstName, lastName, gender) => {
+  return (dispatch) => {
+    const updateFields = constructFields(firstName, lastName, gender);
+    if (Object.keys(updateFields) > 0) {
+      const usersCollection = doc(firebaseFirestore, 'users', user.uid);
+      updateDoc(usersCollection, updateFields)
+        .catch((error) => dispatch({ type: USER_SET_PROFILE_DATA_ERROR, payload: error.message }));
+    };
+  };
+};
+
+export {
+  signUpUserActionCreator, signInUserActionCreator, signOutUserActionCreator, setUserAuthError, updateProfilePhotoActionCreator,
+  updateProfileInitialsActionCreator, updateUserProfileData
+};
