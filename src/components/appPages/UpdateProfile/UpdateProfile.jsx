@@ -9,7 +9,7 @@ import {
 } from '../../../redux/actionCreators/userActionCreators';
 import styles from './UpdateProfile.module.css';
 
-const UpdateProfile = ({ updateInitials, updateProfile, updatePhoto, setLinkActive }) => {
+const UpdateProfile = ({ updateInitials, updateProfile, updatePhoto, setLinkActive, isModal }) => {
   const hist = useHistory();
   const { user, profile } = useContext(AuthContext);
   const [firstName, setFirstName] = useState(profile?.firstName || '');
@@ -36,6 +36,7 @@ const UpdateProfile = ({ updateInitials, updateProfile, updatePhoto, setLinkActi
   return (
       <div className={classList.join(' ')} onClick={() => {
         setVisible(false);
+        isModal ? hist.goBack() : hist.push('/profile');
       }}>
         <FormUpdateProfile firstName={firstName} firstNameChangeHandler={setFirstName} lastName={lastName} lastNameChangeHandler={setLastName} gender={gender} genderChangeHandler={setGender} photo={photo} photoChangeHandler={setPhoto} onSubmit={updateProfileHandler} />
       </div>

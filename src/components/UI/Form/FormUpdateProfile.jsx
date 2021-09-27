@@ -29,10 +29,7 @@ const FormUpdateProfile = ({ firstName, firstNameChangeHandler, lastName, lastNa
     <Input type="file" name="photo" onChange={photoChangeHandler} className="fileLabel" labelSpan="Select new photo" >
       <Upload />
     </Input>
-    <Button type="submit" text="Submit" onClick={(event) => {
-      event.preventDefault();
-      onSubmit(firstName, lastName, gender, photo);
-    }} className="submit" />
+    <Button type="submit" text="Submit" className="submit" />
     <Button type="reset" text="Reset" onClick={() => {
       firstNameChangeHandler('');
       lastNameChangeHandler('');

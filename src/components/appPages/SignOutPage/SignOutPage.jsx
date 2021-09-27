@@ -6,7 +6,7 @@ import { firebaseAuth } from '../../../firebaseConf/firebaseConf';
 import { logout } from '../../../firebaseConf/authUser';
 import styles from './SignOutPage.module.css';
 
-const SignOutPage = () => {
+const SignOutPage = ({ isModal }) => {
   const [visible, setVisible] = useState(true);
   const [showButton, setShowButton] = useState(true);
   const classList = [styles.modal];
@@ -24,11 +24,12 @@ const SignOutPage = () => {
         }, 1000);
       }
     });
-    return subscr();
-  });
+    return subscr;
+  }, []);
   return (
     <div className={classList.join(' ')} onClick={() => {
       setVisible(false);
+      isModal ? hist.goBack() : hist.push('/');
     }}>
       <div className={styles.inner}>
         {showButton && <Button type="button" text="Sign Out" onClick={() => {

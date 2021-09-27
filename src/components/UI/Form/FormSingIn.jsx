@@ -44,7 +44,7 @@ const FormSignIn = ({ email, emailChangeHandler, password, passwordChangeHandler
       <Input type="password" name="password" value={password} onChange={passwordChangeHandler} placeholder="Password" authError={error} setAuthError={setError} fieldError={passwordError} setFieldError={setPasswordError}>
         <LockSvg />
       </Input>
-      <Button type="submit" text="SignIn" onClick={(event) => submitHandler(event)} className="submit" />
+      <Button type="submit" text="SignIn" className="submit" />
       <Button type="reset" text="Reset" onClick={() => resetHandler()} className="reset" />
     </form>
   );

@@ -7,7 +7,7 @@ import { firebaseAuth } from '../../../firebaseConf/firebaseConf';
 import { signUpUserActionCreator, setUserAuthError } from '../../../redux/actionCreators/userActionCreators';
 import styles from './SignUpPage.module.css';
 
-const SignUpPage = ({ authError, setSignup, setAuthError }) => {
+const SignUpPage = ({ authError, setSignup, setAuthError, isModal }) => {
   const hist = useHistory();
   const [visible, setVisible] = useState(true);
   const [email, setEmail] = useState('');
@@ -29,13 +29,13 @@ const SignUpPage = ({ authError, setSignup, setAuthError }) => {
         });
       }
     });
-    return subscr();
-  });
+    return subscr;
+  }, []);
 
   return (
     <div className={classList.join(' ')} onClick={() => {
       setVisible(false);
-      hist.goBack();
+      isModal ? hist.goBack() : hist.push('/');
     }}>
       <FormSignUp
         email={email}

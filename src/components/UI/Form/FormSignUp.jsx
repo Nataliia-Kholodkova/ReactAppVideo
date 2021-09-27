@@ -63,7 +63,7 @@ const FormSignUp = ({ email, emailChangeHandler, password, passwordChangeHandler
       <Input type="password" name="passwordConfirm" value={passwordConfirm} onChange={passwordConfirmChangeHandler} placeholder="Confirm password" authError={error} setAuthError={setError} fieldError={passwordConfirmError} setFieldError={setPasswordConfirmError}>
         <LockSvg />
       </Input>
-      <Button type="submit" text="SignUp" onClick={(event) => submitHandler(event)} className="submit" />
+      <Button type="submit" text="SignUp" className="submit" />
       <Button type="reset" text="Reset" onClick={() => resetHandler()} className="reset" />
     </form>
   );

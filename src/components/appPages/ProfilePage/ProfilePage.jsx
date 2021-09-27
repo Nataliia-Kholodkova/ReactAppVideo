@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { AuthContext } from '../../context/userAuthContext';
-import Image from '../Image/Image';
-import Preloader from '../UI/Preloader/Preloader';
-import Shows from '../Shows/Shows';
-import maleImg from '../../assets/img/avatar_male.png';
-import femaleImg from '../../assets/img/avatar_female.png';
-import { getShowById } from '../../utils/getDataFromServer';
-import styles from './Profile.module.css';
+import { AuthContext } from '../../../context/userAuthContext';
+import Image from '../../Image/Image';
+import Preloader from '../../UI/Preloader/Preloader';
+import Shows from '../../Shows/Shows';
+import maleImg from '../../../assets/img/avatar_male.png';
+import femaleImg from '../../../assets/img/avatar_female.png';
+import { getShowById } from '../../../utils/getDataFromServer';
+import styles from './ProfilePage.module.css';
 
-const Profile = () => {
+const ProfilePage = () => {
   const { user, profile } = useContext(AuthContext);
   if (!user || !profile) {
     return <Preloader className="preloader" />;
@@ -50,4 +50,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default ProfilePage;

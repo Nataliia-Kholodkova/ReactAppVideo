@@ -7,7 +7,7 @@ import { firebaseAuth } from '../../../firebaseConf/firebaseConf';
 import { signInUserActionCreator, setUserAuthError } from '../../../redux/actionCreators/userActionCreators';
 import styles from './LoginPage.module.css';
 
-const SignInPage = ({ setLogin, authError, setAuthError }) => {
+const SignInPage = ({ setLogin, authError, setAuthError, isModal }) => {
   const hist = useHistory();
   const [visible, setVisible] = useState(true);
   const [email, setEmail] = useState('');
@@ -22,17 +22,17 @@ const SignInPage = ({ setLogin, authError, setAuthError }) => {
     const subscr = onAuthStateChanged(firebaseAuth, (user) => {
       if (user && !authError) {
         setVisible(false);
-        hist.goBack();
+        isModal ? hist.goBack() : hist.push('/');
       }
     });
-    return subscr();
-  });
+    return subscr;
+  }, []);
 
   return (
     <main className="main mainSingle">
       <div className={classList.join(' ')} onClick={() => {
         setVisible(false);
-        hist.goBack();
+        isModal ? hist.goBack() : hist.push('/');
       }}>
         <FormSignIn email={email} emailChangeHandler={setEmail} password={password} passwordChangeHandler={setPassword} onSubmit={setLogin} error={authError} setError={setAuthError} />
       </div>

@@ -20,12 +20,13 @@ const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    let snapshotUnsubscribe;
     const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
         setUser(user);
         const docRef = doc(firebaseFirestore, 'users', user.uid);
         getProfileData(docRef);
-        onSnapshot(docRef, () => {
+        snapshotUnsubscribe = onSnapshot(docRef, () => {
           getProfileData(docRef)
             .then(() => {
               const { firstName, lastName } = profile || {};
@@ -37,7 +38,12 @@ const AuthContextProvider = ({ children }) => {
         setProfile(null);
       }
     });
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+      if (snapshotUnsubscribe) {
+        snapshotUnsubscribe();
+      }
+    };
   }, [user?.uid]);
 
   return (
