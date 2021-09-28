@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createContext } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { firebaseFirestore, firebaseAuth } from '../firebaseConf/firebaseConf';
 import { updateProfileInitials } from '../firebaseConf/profileUpdate';
 
-const AuthContext = React.createContext();
+const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -20,31 +20,40 @@ const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    let snapshotUnsubscribe;
-    const unsubscribe = onAuthStateChanged(firebaseAuth, (user) => {
+    return onAuthStateChanged(firebaseAuth, (user) => {
       if (user) {
         setUser(user);
-        const docRef = doc(firebaseFirestore, 'users', user.uid);
-        getProfileData(docRef);
-        snapshotUnsubscribe = onSnapshot(docRef, () => {
-          getProfileData(docRef)
-            .then(() => {
-              const { firstName, lastName } = profile || {};
-              updateProfileInitials(firstName, lastName, user);
-            });
-        });
       } else {
         setUser(null);
         setProfile(null);
       }
     });
-    return () => {
-      unsubscribe();
-      if (snapshotUnsubscribe) {
-        snapshotUnsubscribe();
+  }, []);
+
+  useEffect(() => {
+    return onAuthStateChanged(firebaseAuth, (user) => {
+      if (user) {
+        const docRef = doc(firebaseFirestore, 'users', user.uid);
+        getProfileData(docRef);
+      } else {
+        setUser(null);
+        setProfile(null);
       }
-    };
-  }, [user?.uid]);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      const docRef = doc(firebaseFirestore, 'users', user.uid);
+      return onSnapshot(docRef, () => {
+        getProfileData(docRef)
+          .then(() => {
+            const { firstName, lastName } = profile || {};
+            updateProfileInitials(firstName, lastName, user);
+          });
+      });
+    }
+  }, [profile?.firstName, profile?.lastName]);
 
   return (
     <AuthContext.Provider value={{ user: user, profile: profile }}>{children}</AuthContext.Provider>

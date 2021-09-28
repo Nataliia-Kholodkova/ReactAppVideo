@@ -20,7 +20,7 @@ const SignInPage = ({ isModal }) => {
       }
     });
     return subscr;
-  }, []);
+  });
 
   return (
     <main className="main mainSingle">

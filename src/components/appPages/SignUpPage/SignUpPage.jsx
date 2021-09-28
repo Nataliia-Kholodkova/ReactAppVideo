@@ -25,7 +25,7 @@ const SignUpPage = ({ isModal }) => {
       }
     });
     return subscr;
-  }, []);
+  });
 
   return (
     <div className={classList.join(' ')} onClick={() => {
