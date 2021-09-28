@@ -1,53 +1,67 @@
-import React, { useState } from 'react';
-import Input from '../Input/Input';
+import React from 'react';
+import { Form, Field } from 'react-final-form';
+import { signIn } from '../../../firebaseConf/authUser';
 import Button from '../Button/Button';
 import EmailSvg from '../../Image/SVG/Email';
 import LockSvg from '../../Image/SVG/Lock';
+import { signInValidate, catchAuthError } from '../../../utils/authErrors';
 import styles from './Form.module.css';
 
-const FormSignIn = ({ email, emailChangeHandler, password, passwordChangeHandler, onSubmit, error, setError }) => {
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-
-  const validateForm = () => {
-    if (password.length < 6) {
-      setPasswordError('no-password');
-    }
-    if (!email.length) {
-      setEmailError('no-email');
-    }
-  };
-  const resetHandler = () => {
-    emailChangeHandler('');
-    passwordChangeHandler('');
-  };
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-    validateForm();
-    if (passwordError || emailError) {
-      return;
-    }
-    onSubmit(email, password)
-      .finally(() => {
-        resetHandler();
-      });
-  };
-
+const FormSignIn = () => {
   return (
-    <form className={styles.form} onSubmit={(event) => submitHandler(event)} onClick={(event) => {
-      event.stopPropagation();
-    }}>
-      <Input type="email" name="email" value={email} onChange={emailChangeHandler} placeholder="Email" authError={error} setAuthError={setError} fieldError={emailError} setFieldError={setEmailError}>
-        <EmailSvg />
-      </Input>
-      <Input type="password" name="password" value={password} onChange={passwordChangeHandler} placeholder="Password" authError={error} setAuthError={setError} fieldError={passwordError} setFieldError={setPasswordError}>
-        <LockSvg />
-      </Input>
-      <Button type="submit" text="SignIn" className="submit" />
-      <Button type="reset" text="Reset" onClick={() => resetHandler()} className="reset" />
-    </form>
-  );
+    <Form
+      onSubmit={(data) => {
+        const { email, password } = data;
+        return signIn(email, password)
+          .catch((error) => catchAuthError(error));
+      }}
+      validate={(data) => signInValidate(data)}
+      render={({
+        handleSubmit,
+        submitError,
+        submitting,
+        form
+      }) => (
+        <form
+          className={styles.form}
+          onSubmit={handleSubmit}
+          onClick={(event) => {
+            event.stopPropagation();
+          }}>
+          <Field
+            name="email"
+              render={({ input, meta }) => (
+                <label className={styles.labelText}>
+                  <input
+                    type="email"
+                    {...input}
+                    placeholder="Email"
+                    className={`${styles.input} ${meta.error ? styles.error : ''}`} />
+                  <EmailSvg />
+                  {(meta.error || meta.submitError) && meta.touched && (
+                    <span className={styles.small}>{meta.error || meta.submitError}</span>
+                  )}
+                </label>
+              )}/>
+          <Field
+            name="password"
+            render={({ input, meta }) => (
+                <label className={styles.labelText}>
+                  <input
+                    type="password"
+                  {...input}
+                  placeholder="Password"
+                  className={`${styles.input} ${submitError ? styles.error : ''}`} />
+                  <LockSvg />
+                  {(meta.error || meta.submitError) && meta.touched && (
+                    <span className={styles.small}>{meta.error || meta.submitError}</span>
+                  )}
+                </label>
+            )}/>
+            <Button type="submit" text="SignIn" className="submit" disabled={submitting} />
+            <Button type="reset" text="Reset" className="reset" disabled={submitting} onClick={form.reset} />
+          </form>)
+      } />);
 };
 
 export default FormSignIn;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { firebaseFirestore, firebaseAuth } from '../firebaseConf/firebaseConf';
-import { updateProfileInitialsActionCreator } from '../redux/actionCreators/userActionCreators';
+import { updateProfileInitials } from '../firebaseConf/profileUpdate';
 
 const AuthContext = React.createContext();
 
@@ -30,7 +30,7 @@ const AuthContextProvider = ({ children }) => {
           getProfileData(docRef)
             .then(() => {
               const { firstName, lastName } = profile || {};
-              updateProfileInitialsActionCreator(firstName, lastName, user);
+              updateProfileInitials(firstName, lastName, user);
             });
         });
       } else {

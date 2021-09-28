@@ -1,29 +1,21 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { AuthContext } from '../../../context/userAuthContext';
 import FormUpdateProfile from '../../UI/Form/FormUpdateProfile';
-import {
-  updateProfilePhotoActionCreator,
-  updateProfileInitialsActionCreator, updateUserProfileData
-} from '../../../redux/actionCreators/userActionCreators';
+import { updateProfileInitials, updateUserProfileData } from '../../../firebaseConf/profileUpdate';
 import styles from './UpdateProfile.module.css';
 
-const UpdateProfile = ({ updateInitials, updateProfile, updatePhoto, setLinkActive, isModal }) => {
+const UpdateProfile = ({ setLinkActive, isModal }) => {
   const hist = useHistory();
-  const { user, profile } = useContext(AuthContext);
-  const [firstName, setFirstName] = useState(profile?.firstName || '');
-  const [lastName, setLastName] = useState(profile?.lastName || '');
-  const [gender, setGender] = useState(profile?.gender || '');
-  const [photo, setPhoto] = useState('');
+  const { user } = useContext(AuthContext);
   const [visible, setVisible] = useState(true);
   const classList = [styles.modal];
   if (visible) {
     classList.push(styles.visible);
   }
 
-  const updateProfileHandler = () => {
-    Promise.all([updatePhoto(user, photo), updateInitials(firstName, lastName, user), updateProfile(user, firstName, lastName, gender)])
+  const updateProfileHandler = (firstName, lastName, gender) => {
+    Promise.all([updateProfileInitials(firstName, lastName, user), updateUserProfileData(user, firstName, lastName, gender)])
       .finally(() => {
         if (setLinkActive) {
           setLinkActive(false);
@@ -38,19 +30,9 @@ const UpdateProfile = ({ updateInitials, updateProfile, updatePhoto, setLinkActi
         setVisible(false);
         isModal ? hist.goBack() : hist.push('/profile');
       }}>
-        <FormUpdateProfile firstName={firstName} firstNameChangeHandler={setFirstName} lastName={lastName} lastNameChangeHandler={setLastName} gender={gender} genderChangeHandler={setGender} photo={photo} photoChangeHandler={setPhoto} onSubmit={updateProfileHandler} />
+        <FormUpdateProfile onSubmit={updateProfileHandler} />
       </div>
   );
 };
 
-const mapStateTpProps = (state) => ({ errors: state.user });
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    updatePhoto: (user, photo) => dispatch(updateProfilePhotoActionCreator(user, photo)),
-    updateInitials: (firstName, lastName, user) => dispatch(updateProfileInitialsActionCreator(firstName, lastName, user)),
-    updateProfile: (user, firstName, lastName, gender) => dispatch(updateUserProfileData(user, firstName, lastName, gender)),
-  };
-};
-
-export default connect(mapStateTpProps, mapDispatchToProps)(UpdateProfile);
+export default UpdateProfile;

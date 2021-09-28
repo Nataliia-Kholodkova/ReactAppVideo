@@ -7,6 +7,10 @@ import Shows from '../../Shows/Shows';
 import maleImg from '../../../assets/img/avatar_male.png';
 import femaleImg from '../../../assets/img/avatar_female.png';
 import { getShowById } from '../../../utils/getDataFromServer';
+import { updateProfilePhoto } from '../../../firebaseConf/profileUpdate';
+import Upload from '../../Image/SVG/Upload';
+import Input from '../../UI/Input/Input';
+import Button from '../../UI/Button/Button';
 import styles from './ProfilePage.module.css';
 
 const ProfilePage = () => {
@@ -17,6 +21,8 @@ const ProfilePage = () => {
   const { firstName, lastName, gender, likedShows } = profile;
   const [shows, setShows] = useState([]);
   const [showsLoad, setShowsLoad] = useState(true);
+  const [photo, setPhoto] = useState(null);
+  const [, setPhotoChanged] = useState(false);
 
   useEffect(() => {
     setShowsLoad(true);
@@ -25,6 +31,10 @@ const ProfilePage = () => {
       .finally(() => setShowsLoad(false));
   }, [likedShows.length]);
 
+  const upload = () => {
+    updateProfilePhoto(user, photo);
+  };
+
   return (
     <>
       <section className={styles.section}>
@@ -32,6 +42,15 @@ const ProfilePage = () => {
           <Image src={user?.photoURL ?? (gender && gender === 'Female'
             ? femaleImg
             : maleImg)} alt={`${firstName} ${lastName}`} className="showBigImg" />
+          <div className={styles.photoUpload}>
+            <Input type="file" className="fileLabel" inputClassName="visually-hidden" onChange={setPhoto} name="photo">
+              <Upload />
+            </Input>
+            <Button type="button" className="submit" text="Confirm" onClick={() => {
+              setPhotoChanged(true);
+              upload();
+            }} />
+          </div>
         </div>
         <div className={styles.info}>
           <h1 className={styles.title}>{`${firstName} ${lastName}`}</h1>

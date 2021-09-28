@@ -29,16 +29,34 @@
 }
 
 .label {
+  position: relative;
   width: 100%;
   padding: 5px 0;
-    margin-bottom: 15px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 
-    span {
-      margin-right: 10px;
+  span {
+    margin-right: 10px;
+    color: rgba(white, 0.3);
+  }
+
+  svg {
+    position: absolute;
+    top: 12px;
+    right: 19px;
+    width: 20px;
+    height: 20px;
+    fill: $darkCyanColor;
+    @extend %transition;
+}
+
+&:hover {
+    svg {
+        fill: $cyanColor;
     }
+}
 }
 
 .select {
@@ -48,4 +66,104 @@
   color: $cyanColor;
   border: none;
   border-bottom: 1px solid  white;
+}
+
+.labelText {
+    position: relative;
+    padding: 5px 0;
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width: 100%;
+
+    svg {
+        position: absolute;
+        top: 12px;
+        right: 19px;
+        width: 20px;
+        height: 20px;
+        fill: $darkCyanColor;
+        @extend %transition;
+    }
+
+    &:hover {
+        svg {
+            fill: $cyanColor;
+        }
+    }
+}
+
+.filedLabel {
+  width: 100%;
+  padding: 5px 0;
+    margin-bottom: 15px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    span {
+      margin-right: 10px;
+    }
+
+    svg {
+        position: static;
+        width: 40px;
+        height: 40px;
+        margin-right: 15px;
+        fill: $darkCyanColor;
+    @extend %transition;
+}
+
+&:hover {
+    svg {
+        fill: $cyanColor;
+    }
+}
+    }
+
+input[type="file"] {
+    display: none;
+}
+
+.input,
+.input:-webkit-autofill {
+    padding: 5px 1px;
+    width: 100%;
+    margin-right: 20px;
+    @include fontView(16px, 300);
+    color: $cyanColor;
+    border-bottom: 1px solid white;
+    @extend %transition;
+
+    &:hover,
+    &:focus {
+        border-bottom-color: $cyanColor;
+    }
+
+    &::placeholder {
+        @include fontView(14px, 300);
+    }
+
+    @media screen and (min-width: 768px) {
+      width: 100%;
+    }
+
+    &.error {
+        border-bottom: 1px solid tomato;
+        color: tomato;
+
+        &::placeholder {
+            color: tomato;
+        }
+
+        & ~ .small {
+            display: block;
+            width: 100%;
+            @include fontView(10px, 300);
+            color: tomato;
+        }
+    }
 }

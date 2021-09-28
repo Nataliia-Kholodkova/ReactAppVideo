@@ -1,42 +1,64 @@
 import React from 'react';
-import Input from '../Input/Input';
+import { Form, Field } from 'react-final-form';
 import Button from '../Button/Button';
-import Upload from '../../Image/SVG/Upload';
 import styles from './Form.module.css';
 
-const FormUpdateProfile = ({ firstName, firstNameChangeHandler, lastName, lastNameChangeHandler, gender, genderChangeHandler, photo, photoChangeHandler, onSubmit }) => (
-  <form
-    className={styles.form}
-    onClick={(event) => {
-      event.stopPropagation();
+const FormUpdateProfile = ({ onSubmit }) => (
+  <Form
+    onSubmit={(data) => {
+      const { firstName, lastName, gender } = data;
+      onSubmit(firstName, lastName, gender);
     }}
-    onSubmit={(event) => {
-      event.preventDefault();
-      onSubmit(firstName, lastName, gender, photo);
-    }}
-  >
-    <Input type="text" name="firstName" value={firstName} onChange={firstNameChangeHandler} placeholder="First Name" />
-    <Input type="text" name="lastName" value={lastName} onChange={lastNameChangeHandler} placeholder="Last name" />
-    <label className={styles.label}>
-      <span>Select you gender</span>
-    <select name="gender" onChange={({ target }) => genderChangeHandler(target.value)
-    } value={gender || 'Female'}
-      className={styles.select}>
-      <option value="Female">Female</option>
-      <option value="Male">Male</option>
-    </select>
-    </label>
+    render={({
+      handleSubmit,
+      submitting,
+      form
+    }) => (
+        <form
+          className={styles.form}
+          onSubmit={handleSubmit}
+          onClick={(event) => {
+            event.stopPropagation();
+          }}>
+          <Field
+            name="firstName"
+              render={({ input }) => (
+                <label className={styles.labelText}>
+                  <input
+                    type="text"
+                    {...input}
+                    placeholder="First Name"
+                    className={styles.input} />
+                </label>
+              )}/>
+          <Field
+            name="lastName"
+            render={({ input }) => (
+              <label className={styles.labelText}>
+                  <input
+                    type="text"
+                    {...input}
+                    placeholder="Last Name"
+                    className={styles.input} />
+                </label>
+            )}/>
+        <label className={styles.label}>
+          <span>Select you gender</span>
+          <Field name="gender" component="select" className={styles.select}>
+              <option />
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+          </Field>
+        </label>
+{/*
     <Input type="file" name="photo" onChange={photoChangeHandler} className="fileLabel" labelSpan="Select new photo" >
       <Upload />
-    </Input>
-    <Button type="submit" text="Submit" className="submit" />
-    <Button type="reset" text="Reset" onClick={() => {
-      firstNameChangeHandler('');
-      lastNameChangeHandler('');
-      genderChangeHandler('');
-      photoChangeHandler('');
-    }} className="reset" />
-  </form>
+    </Input> */}
+
+            <Button type="submit" text="SignIn" className="submit" disabled={submitting} />
+            <Button type="reset" text="Reset" className="reset" disabled={submitting} onClick={form.reset} />
+          </form>)
+      } />
 );
 
 export default FormUpdateProfile;

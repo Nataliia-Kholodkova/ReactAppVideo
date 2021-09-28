@@ -1,72 +1,81 @@
-import React, { useState } from 'react';
-import Input from '../Input/Input';
+import React from 'react';
+import { Form, Field } from 'react-final-form';
+import { signUp } from '../../../firebaseConf/authUser';
 import Button from '../Button/Button';
 import EmailSvg from '../../Image/SVG/Email';
 import LockSvg from '../../Image/SVG/Lock';
+import { signUpValidate, catchAuthError } from '../../../utils/authErrors';
 import styles from './Form.module.css';
 
-const FormSignUp = ({ email, emailChangeHandler, password, passwordChangeHandler, passwordConfirm, passwordConfirmChangeHandler, onSubmit, setError, error }) => {
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [passwordConfirmError, setPasswordConfirmError] = useState('');
-
-  const validateForm = () => {
-    if (password.length < 6 || passwordConfirm.length < 6) {
-      setPasswordError('no-password');
-      return false;
-    }
-    if (password !== passwordConfirm) {
-      setPasswordError('password-not-match');
-      return false;
-    }
-    if (!email.length) {
-      setEmailError('no-email');
-      return false;
-    }
-    return true;
-  };
-
-  const resetHandler = () => {
-    emailChangeHandler('');
-    passwordChangeHandler('');
-    passwordConfirmChangeHandler('');
-  };
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-    if (!validateForm()) {
-      return;
-    };
-    if (passwordError || emailError || passwordConfirmError) {
-      return;
-    }
-    onSubmit(email, password)
-      .finally(() => {
-        resetHandler();
-      });
-  };
-
-  return (
-    <form
-      className={styles.form}
-      onClick={(event) => {
-        event.stopPropagation();
+const FormSignUp = () => (
+  <Form
+      onSubmit={(data) => {
+        const { email, password } = data;
+        return signUp(email, password)
+          .catch((error) => catchAuthError(error));
       }}
-      onSubmit={(event) => submitHandler(event)}
-    >
-      <Input type="email" name="email" value={email} onChange={emailChangeHandler} placeholder="Email" authError={error} setAuthError={setError} fieldError={emailError} setFieldError={setEmailError}>
-        <EmailSvg />
-      </Input>
-      <Input type="password" name="password" value={password} onChange={passwordChangeHandler} placeholder="Password" authError={error} setAuthError={setError} fieldError={passwordError} setFieldError={setPasswordError}>
-        <LockSvg />
-      </Input>
-      <Input type="password" name="passwordConfirm" value={passwordConfirm} onChange={passwordConfirmChangeHandler} placeholder="Confirm password" authError={error} setAuthError={setError} fieldError={passwordConfirmError} setFieldError={setPasswordConfirmError}>
-        <LockSvg />
-      </Input>
-      <Button type="submit" text="SignUp" className="submit" />
-      <Button type="reset" text="Reset" onClick={() => resetHandler()} className="reset" />
-    </form>
-  );
-};
+      validate={(data) => signUpValidate(data)}
+      render={({
+        handleSubmit,
+        submitError,
+        submitting,
+        form
+      }) => (
+        <form
+          className={styles.form}
+          onSubmit={handleSubmit}
+          onClick={(event) => {
+            event.stopPropagation();
+          }}>
+          <Field
+            name="email"
+            render={({ input, meta }) => (
+              <label className={styles.labelText}>
+                <input
+                  type="email"
+                  {...input}
+                  placeholder="Email"
+                  className={`${styles.input} ${meta.error ? styles.error : ''}`} />
+                <EmailSvg />
+                {(meta.error || meta.submitError) && meta.touched && (
+                  <span className={styles.small}>{meta.error || meta.submitError}</span>
+                )}
+                </label>
+            )}/>
+          <Field
+            name="password"
+            render={({ input, meta }) => (
+              <label className={styles.labelText}>
+                <input
+                  type="password"
+                  {...input}
+                  placeholder="Password"
+                  className={`${styles.input} ${submitError ? styles.error : ''}`} />
+                <LockSvg />
+                {(meta.error || meta.submitError) && meta.touched && (
+                  <span className={styles.small}>{meta.error || meta.submitError}</span>
+                )}
+              </label>
+            )}
+            />
+          <Field
+            name="password"
+            render={({ input, meta }) => (
+              <label className={styles.labelText}>
+                <input
+                  type="password"
+                  {...input}
+                  placeholder="Password"
+                  className={`${styles.input} ${submitError ? styles.error : ''}`} />
+                  <LockSvg />
+                  {(meta.error || meta.submitError) && meta.touched && (
+                  <span className={styles.small}>{meta.error || meta.submitError}</span>
+                  )}
+              </label>
+            )}/>
+            <Button type="submit" text="SignIn" className="submit" disabled={submitting} />
+            <Button type="reset" text="Reset" className="reset" disabled={submitting} onClick={form.reset} />
+          </form>)
+      } />);
 
 export default FormSignUp;

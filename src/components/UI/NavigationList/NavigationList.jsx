@@ -25,6 +25,7 @@ const NavigationList = ({
             value={showQuery}
             onChange={searchShowHandler}
             placeholder="Search shows"
+            className="label"
           >
             <SearchSvg />
           </Input>
