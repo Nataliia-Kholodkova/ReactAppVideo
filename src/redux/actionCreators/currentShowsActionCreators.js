@@ -12,8 +12,8 @@ const setCurrentShowsIsLoadActionCreator = (payload) => ({
 const getCurrentShowsActionCreator = (date) => {
   return (dispatch) => {
     return getCurrentShows(date)
-      .then((shows) => dispatch({ type: CURRENT_SHOWS_SET_SHOWS, payload: shows }));
+      .then((shows) => dispatch(setCurrentShowsActionCreator(shows)));
   };
 };
 
-export { setCurrentShowsActionCreator, setCurrentShowsIsLoadActionCreator, getCurrentShowsActionCreator };
+export { setCurrentShowsIsLoadActionCreator, getCurrentShowsActionCreator };

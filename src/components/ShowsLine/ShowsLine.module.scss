@@ -17,13 +17,35 @@
   @extend %link;
   @include fontView(30px, 600);
   color: $cyanColor;
-  border-bottom: 2px solid transparent;
+  border-bottom: 3px solid transparent;
   z-index: 1;
   text-shadow: -2px -1px $darkColor;
   @extend %transition;
+  animation: blink;
+    -webkit-animation: blink;
+    animation-timing-function: linear;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-direction: alternate;
 
   &:hover {
-    border-bottom: 2px solid $cyanColor;
+    border-bottom-color: $cyanColor;
+    animation-play-state: paused;
 }
+}
+
+@keyframes blink {
+  0% {
+    border-bottom-color: rgba($cyanColor, 0.4);
+  }
+
+  50% {
+    border-bottom-color: rgba($cyanColor, 1);
+  }
+
+  to {
+    border-bottom-color: rgba($cyanColor, 0.4);
+  }
 }
 

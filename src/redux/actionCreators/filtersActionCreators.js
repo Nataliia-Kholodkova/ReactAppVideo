@@ -19,10 +19,6 @@ const setFilterByQueryActionCreator = (payload) => ({
   type: FILTER_SET_QUERY, payload
 });
 
-// const setFilterActorsByQueryActionCreator = (payload) => ({
-//   type: FILTER_SET_ACTOR_QUERY, payload
-// });
-
 export {
   setFilterByGenreActionCreator, setFilterByRatingActionCreator, setFilterByRPremierDateActionCreator, setFilterByQueryActionCreator,
 };

@@ -24,8 +24,8 @@ const setShowsShouldLoadActionCreator = (payload) => ({
 const getShowsActionCreator = (page) => {
   return (dispatch) => {
     return getShows(page)
-      .then((shows) => dispatch({ type: SHOWS_SET_SHOWS, payload: shows }));
+      .then((shows) => dispatch(setShowsActionCreator(shows)));
   };
 };
 
-export { setShowsActionCreator, setShowsIsLoadActionCreator, setShowsPageActionCreator, getShowsActionCreator, setShowsShouldLoadActionCreator, setShowsLastIndexActionCreator };
+export { setShowsIsLoadActionCreator, setShowsPageActionCreator, getShowsActionCreator, setShowsShouldLoadActionCreator, setShowsLastIndexActionCreator };
