@@ -6,8 +6,8 @@ import styles from './Form.module.css';
 const FormUpdateProfile = ({ onSubmit }) => (
   <Form
     onSubmit={(data) => {
-      const { firstName, lastName, gender } = data;
-      onSubmit(firstName, lastName, gender);
+      const { firstName, lastName, gender, country, city, phone } = data;
+      onSubmit(firstName, lastName, gender, country, city, phone);
     }}
     render={({
       handleSubmit,
@@ -41,6 +41,39 @@ const FormUpdateProfile = ({ onSubmit }) => (
                     placeholder="Last Name"
                     className={styles.input} />
                 </label>
+            )} />
+        <Field
+            name="country"
+            render={({ input }) => (
+              <label className={styles.labelText}>
+                  <input
+                    type="text"
+                    {...input}
+                    placeholder="Country"
+                    className={styles.input} />
+                </label>
+            )} />
+        <Field
+            name="city"
+            render={({ input }) => (
+              <label className={styles.labelText}>
+                  <input
+                    type="text"
+                    {...input}
+                    placeholder="City"
+                    className={styles.input} />
+                </label>
+            )}/>
+            <Field
+            name="phone"
+            render={({ input }) => (
+              <label className={styles.labelText}>
+                  <input
+                    type="phone"
+                    {...input}
+                    placeholder="Phone"
+                    className={styles.input} />
+                </label>
             )}/>
         <label className={styles.label}>
           <span>Select you gender</span>
@@ -50,11 +83,6 @@ const FormUpdateProfile = ({ onSubmit }) => (
               <option value="Male">Male</option>
           </Field>
         </label>
-{/*
-    <Input type="file" name="photo" onChange={photoChangeHandler} className="fileLabel" labelSpan="Select new photo" >
-      <Upload />
-    </Input> */}
-
             <Button type="submit" text="SignIn" className="submit" disabled={submitting} />
             <Button type="reset" text="Reset" className="reset" disabled={submitting} onClick={form.reset} />
           </form>)

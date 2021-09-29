@@ -7,13 +7,13 @@ import { setFilterByGenreActionCreator } from '../../redux/actionCreators/filter
 import { AuthContext } from '../../context/userAuthContext';
 import { updateFavouriteShows } from '../../firebaseConf/profileUpdate';
 
-const Shows = ({ shows, isLoad, genres, rating, premierDate, setFilter, setLiked }) => {
+const Shows = ({ shows, isLoad, genres, rating, premierDate, setFilter }) => {
   const newShows = useSortedAndSelectedShows(shows, genres, rating, premierDate);
-  const { user, profile } = useContext(AuthContext);
-  const { likedShows } = profile || [];
+  const { currentUser, currentUserProfile } = useContext(AuthContext);
+  const { likedShows } = currentUserProfile || [];
   return (
     <>
-      {newShows.length > 0 && newShows.map((show) => <ShowSmall show={show} key={show.id} setFilter={setFilter} likedShows={likedShows} user={user} setLiked={updateFavouriteShows} />)}
+      {newShows.length > 0 && newShows.map((show) => <ShowSmall show={show} key={show.id} setFilter={setFilter} likedShows={likedShows} user={currentUser} setLiked={updateFavouriteShows} />)}
       {isLoad && <Preloader className="preloader" />}
     </>
   );

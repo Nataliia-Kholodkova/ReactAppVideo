@@ -5,14 +5,12 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const updateProfilePhoto = (user, photo) => {
   if (photo) {
-    const ext = photo.name.split('.').pop();
-    const storageRef = ref(getStorage(), `userProfile/${user.uid}.${ext}`);
+    const storageRef = ref(getStorage(), `userProfile/${user.uid}`);
     return uploadBytes(storageRef, photo)
       .then(() => {
         return getDownloadURL(storageRef);
       })
       .then((url) => {
-        console.log('url', url);
         return updateProfile(user, {
           photoURL: url
         });
@@ -23,8 +21,8 @@ const updateProfilePhoto = (user, photo) => {
 
 const createInitials = (firstName, lastName) => `${firstName ? `${firstName[0].toUpperCase()}` : ''}${lastName ? `${lastName[0].toUpperCase()}` : ''}`;
 
-const constructFields = (firstName, lastName, gender) => {
-  const fields = {};
+const constructFields = (firstName, lastName, gender, country, city, phone, uid) => {
+  const fields = { uid };
   if (firstName) {
     fields.firstName = firstName;
   }
@@ -33,6 +31,15 @@ const constructFields = (firstName, lastName, gender) => {
   }
   if (gender) {
     fields.gender = gender;
+  }
+  if (country) {
+    fields.country = country;
+  }
+  if (city) {
+    fields.city = city;
+  }
+  if (phone) {
+    fields.phone = phone;
   }
   return fields;
 };
@@ -47,8 +54,8 @@ const updateProfileInitials = (firstName, lastName, user) => {
   return Promise.resolve();
 };
 
-const updateUserProfileData = (user, firstName, lastName, gender) => {
-  const updateFields = constructFields(firstName, lastName, gender);
+const updateUserProfileData = (user, firstName, lastName, gender, country, city, phone) => {
+  const updateFields = constructFields(firstName, lastName, gender, country, city, phone, user.uid);
   if (Object.keys(updateFields).length > 0) {
     const usersCollection = doc(firebaseFirestore, 'users', user.uid);
     return updateDoc(usersCollection, updateFields);
@@ -61,6 +68,11 @@ const updateFavouriteShows = (user, shows) => {
   return updateDoc(usersCollection, { likedShows: shows });
 };
 
+const updateFriends = (user, friends) => {
+  const usersCollection = doc(firebaseFirestore, 'users', user.uid);
+  return updateDoc(usersCollection, { friends: friends });
+};
+
 export {
-  updateProfilePhoto, updateProfileInitials, updateUserProfileData, updateFavouriteShows
+  updateProfilePhoto, updateProfileInitials, updateUserProfileData, updateFavouriteShows, updateFriends
 };

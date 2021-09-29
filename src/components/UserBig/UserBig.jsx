@@ -2,13 +2,14 @@ import React, { useState, useEffect, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AuthContext } from '../../../context/userAuthContext';
 import Image from '../../Image/Image';
+import Shows from '../../Shows/Shows';
 import maleImg from '../../../assets/img/avatar_male.png';
 import femaleImg from '../../../assets/img/avatar_female.png';
 import { getShowById, getUserById } from '../../../utils/getDataFromServer';
 import { updateProfilePhoto } from '../../../firebaseConf/profileUpdate';
 import Upload from '../../Image/SVG/Upload';
 import Input from '../../UI/Input/Input';
-import Tabs from '../../Tabs/Tabs';
+import Users from '../../Users/Users';
 import styles from './ProfilePage.module.css';
 
 const ProfilePage = () => {
@@ -32,7 +33,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (friendsId) {
       setFriendsLoad(true);
-      Promise.all(friendsId.map((id) => getUserById(id)))
+      Promise.all(friends.map((id) => getUserById(id)))
         .then((data) => setFriends(data))
         .finally(() => setFriendsLoad(false));
     }
@@ -64,8 +65,13 @@ const ProfilePage = () => {
               pathname: '/updateProfile',
               state: { modal: true }
             }} className={styles.buttonLink}>Update Profile</NavLink>
-        </div>
-        <Tabs shows={shows} showsLoad={showsLoad} friends={friends} friendsLoad={friendsLoad} currentUserProfile={currentUserProfile} friendsId={friendsId} />
+          </div>
+          <div className={styles.contentContainer}>
+            {shows.length > 0 && <h2 className={styles.title}>Favourite shows</h2>}
+            {Shows.length === 0 && !showsLoad && <h2 className={styles.title}>You don&apos;t have favourite shows yet</h2>}
+          <Shows shows={shows} isLoad={showsLoad} />
+          <Users users={friends} isLoad={friendsLoad} currentUserFriendIds={friendsId} currentUser={currentUserProfile} />
+          </div>
         </section>
       }
   </>

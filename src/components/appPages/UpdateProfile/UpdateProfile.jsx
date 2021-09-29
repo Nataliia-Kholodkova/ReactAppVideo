@@ -7,21 +7,21 @@ import styles from './UpdateProfile.module.css';
 
 const UpdateProfile = ({ setLinkActive, isModal }) => {
   const hist = useHistory();
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [visible, setVisible] = useState(true);
   const classList = [styles.modal];
   if (visible) {
     classList.push(styles.visible);
   }
 
-  const updateProfileHandler = (firstName, lastName, gender) => {
-    Promise.all([updateProfileInitials(firstName, lastName, user), updateUserProfileData(user, firstName, lastName, gender)])
+  const updateProfileHandler = (firstName, lastName, gender, country, city, phone) => {
+    Promise.all([updateProfileInitials(firstName, lastName, currentUser), updateUserProfileData(currentUser, firstName, lastName, gender, country, city, phone)])
       .finally(() => {
         if (setLinkActive) {
           setLinkActive(false);
         }
         setVisible(false);
-        hist.push('/profile');
+        hist.push(`/profile/${currentUser.uid}`);
       });
   };
 

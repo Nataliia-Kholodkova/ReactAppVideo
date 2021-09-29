@@ -64,6 +64,52 @@
   margin-bottom: 40px;
 }
 
+.contentContainer {
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+}
+
+.rating {
+  margin-left: 15px;
+}
+
+.genre {
+  margin-right: 10px;
+}
+
+.container, .stars, .genres {
+  margin-bottom: 15px;
+}
+
+.container,
+.genres,
+.slide {
+  h3, p {
+    @extend %reset;
+  }
+
+  h3 {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+}
+
+.linkImage {
+  @extend %link;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .buttonLink {
   @extend %link;
   padding: 8px 15px;

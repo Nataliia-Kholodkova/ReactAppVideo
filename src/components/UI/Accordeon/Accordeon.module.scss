@@ -1,0 +1,44 @@
+@import '../../../mixins.scss';
+@import '../../../variables.scss';
+
+.container {
+  width: 100%;
+  position: relative;
+  margin-top: 10px;
+}
+
+.accordeon {
+  margin-bottom: 10px;
+  padding: 5px 0;
+  @include fontView(14px,700);
+  color: rgba($darkCyanColor, 0.6);
+  text-align: center;
+  border-bottom: 1px solid rgba($darkCyanColor, 0.6);
+  @extend %transition;
+
+  &:hover, &:focus {
+    color: rgba($darkCyanColor, 1);
+    border-bottom: 1px solid rgba($darkCyanColor, 1);
+  }
+}
+
+.pannel {
+  min-height: 0px;
+  height: 0px;
+  transform: scale(0);
+  transition: min-height 0.3s linear, transform 0.3s linear;
+  transition-delay: 0.3s, 0s;
+
+  &.open {
+  min-height: 42px;
+  transform: scale(1);
+  transition: min-height 0.3s linear, transform 0.3s linear;
+  transition-delay: 0s, 0.3s;
+  }
+}
+
+.text {
+  @extend %reset;
+  margin-bottom: 3px;
+  @include fontView($fontSize: 14px, $fontWeight: 300);
+}

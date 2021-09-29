@@ -1,4 +1,6 @@
 import * as axios from 'axios';
+import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
+import { firebaseFirestore } from '../firebaseConf/firebaseConf';
 
 const HTTP_AXIOS = axios.create({
   baseURL: 'https://api.tvmaze.com/'
@@ -53,4 +55,25 @@ const getActorCast = (actorId) => {
     .then((data) => data.map((item) => item._embedded.show));
 };
 
-export { getActorbyId, getActors, getShowById, getShows, getShowByQuery, getActorCast, getCurrentShows };
+const getUserById = (id) => {
+  const docRef = doc(firebaseFirestore, 'users', id);
+  return getDoc(docRef)
+    .then((docSnap) => {
+      if (docSnap.exists()) {
+        return docSnap.data();
+      } else {
+        return null;
+      }
+    });
+};
+
+const getUsers = () => {
+  return getDocs(collection(firebaseFirestore, 'users'))
+    .then((data) => {
+      const users = [];
+      data.forEach((item) => users.push(item.data()));
+      return users;
+    });
+};
+
+export { getActorbyId, getActors, getShowById, getShows, getShowByQuery, getActorCast, getCurrentShows, getUserById, getUsers };

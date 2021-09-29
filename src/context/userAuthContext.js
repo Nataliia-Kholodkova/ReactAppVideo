@@ -56,7 +56,7 @@ const AuthContextProvider = ({ children }) => {
   }, [profile?.firstName, profile?.lastName]);
 
   return (
-    <AuthContext.Provider value={{ user: user, profile: profile }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ currentUser: user, currentUserProfile: profile }}>{children}</AuthContext.Provider>
   );
 };
 
