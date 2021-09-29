@@ -31,3 +31,13 @@
     border-color: $darkCyanColor;
 }
 }
+
+.tab {
+  padding: 5px 30px;
+    color: rgba(0,173,181,.7);
+    border: 2px solid rgba(0,173,181,.7);
+    border-radius: 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: none;
+}
