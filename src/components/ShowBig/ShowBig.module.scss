@@ -6,11 +6,16 @@
   padding: 0 10px 15px 10px;
   display: flex;
   flex-direction: column;
+  @include animation();
 
   @media screen and(min-width: 689px) {
     flex-direction: row;
     flex-wrap: wrap;
   }
+}
+
+.favouriteLink {
+  margin-top: 20px;
 }
 
 .title {

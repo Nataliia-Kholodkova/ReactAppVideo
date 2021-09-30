@@ -15,9 +15,12 @@ const useObserver = (ref, isLoad, func) => {
         func();
       }
     };
-
-    observer.current = new IntersectionObserver(callback);
-    observer.current.observe(ref.current);
+    try {
+      observer.current = new IntersectionObserver(callback);
+      observer.current.observe(ref.current);
+    } catch {
+      observer.current = null;
+    }
   }, [isLoad]);
 };
 

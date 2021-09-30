@@ -3,25 +3,29 @@ import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../../context/userAuthContext';
 import FormUpdateProfile from '../../UI/Form/FormUpdateProfile';
 import { updateProfileInitials, updateUserProfileData } from '../../../firebaseConf/profileUpdate';
+import Error from '../Error/Error';
 import styles from './UpdateProfile.module.css';
 
 const UpdateProfile = ({ setLinkActive, isModal }) => {
   const hist = useHistory();
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   const [visible, setVisible] = useState(true);
+  const [updateError, setUpdateError] = useState(null);
   const classList = [styles.modal];
   if (visible) {
     classList.push(styles.visible);
   }
 
-  const updateProfileHandler = (firstName, lastName, gender) => {
-    Promise.all([updateProfileInitials(firstName, lastName, user), updateUserProfileData(user, firstName, lastName, gender)])
+  const updateProfileHandler = (firstName, lastName, gender, country, city, phone) => {
+    setUpdateError(null);
+    Promise.all([updateProfileInitials(firstName, lastName, currentUser), updateUserProfileData(currentUser, firstName, lastName, gender, country, city, phone)])
+      .catch(() => setUpdateError('Server error. Try to update later.'))
       .finally(() => {
         if (setLinkActive) {
           setLinkActive(false);
         }
         setVisible(false);
-        hist.push('/profile');
+        hist.push(`/profile/${currentUser.uid}`);
       });
   };
 
@@ -30,7 +34,8 @@ const UpdateProfile = ({ setLinkActive, isModal }) => {
         setVisible(false);
         isModal ? hist.goBack() : hist.push('/profile');
       }}>
-        <FormUpdateProfile onSubmit={updateProfileHandler} />
+      <FormUpdateProfile onSubmit={updateProfileHandler} />
+      {updateError && <Error error={updateError} />}
       </div>
   );
 };

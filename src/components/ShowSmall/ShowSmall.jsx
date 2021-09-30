@@ -1,21 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory, NavLink } from 'react-router-dom';
 import noImg from '../../assets/img/no-image.svg';
 import Image from '../Image/Image';
 import Heart from '../Image/SVG/Heart';
+import Error from '../appPages/Error/Error';
 import calculateStars from '../../utils/calculateRatingStars';
+import { heartOnClick } from '../../utils/listeners';
 import styles from './ShowSmall.module.css';
 
-const ShowSmall = ({ show, setFilter, likedShows, user, setLiked }) => {
+const ShowSmall = ({ show, setFilter, likedShows, user }) => {
   const hist = useHistory();
   const stars = calculateStars(show.rating.average);
   const isFavourite = likedShows ? likedShows.includes(show.id) : false;
-  const heartOnClick = () => {
-    const newShows = isFavourite
-      ? likedShows.filter((id) => id !== show.id)
-      : likedShows.concat([show.id]);
-    setLiked(user, newShows);
-  };
+  const [updateError, setUpdateError] = useState(null);
   return (
     <section onClick={() => hist.push(`/shows/show/${show.id}`)} className={styles.section}>
       {!show.image?.medium && <h1 className={styles.title}>{show.name}</h1>}
@@ -24,7 +21,9 @@ const ShowSmall = ({ show, setFilter, likedShows, user, setLiked }) => {
         {user && <a className={styles.favouriteLink} href="#" onClick={(event) => {
           event.preventDefault();
           event.stopPropagation();
-          heartOnClick();
+          setUpdateError(null);
+          heartOnClick(user, show, isFavourite, likedShows)
+            .catch(() => setUpdateError('Server error. Try Later'));
         }}>
         <Heart className={isFavourite ? 'favourite' : 'usual'} />
         </a>}
@@ -47,6 +46,7 @@ const ShowSmall = ({ show, setFilter, likedShows, user, setLiked }) => {
         </div>
         <p className={styles.date}>{show.premiered}</p>
       </div>
+      {updateError && <Error error={updateError} />}
     </section>
   );
 };

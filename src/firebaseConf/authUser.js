@@ -6,7 +6,7 @@ import authFields from '../utils/authFields';
 const signUp = (email, password) => createUserWithEmailAndPassword(firebaseAuth, email, password)
   .then(({ user }) => {
     const usersCollection = doc(collection(firebaseFirestore, 'users'), user.uid);
-    setDoc(usersCollection, authFields);
+    setDoc(usersCollection, { ...authFields, uid: user.uid });
   });
 
 const signIn = (email, password) => signInWithEmailAndPassword(firebaseAuth, email, password);

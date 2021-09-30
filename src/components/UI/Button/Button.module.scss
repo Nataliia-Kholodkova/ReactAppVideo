@@ -15,13 +15,25 @@
   @extend %transition;
 }
 
-.submit {
+.submit, .follow, .followBig {
   background-color: rgba($cyanColor, 0.7);
   border: 1px solid $darkCyanColor;
 
   &:hover {
     background-color: $cyanColor;
 }
+}
+
+.follow {
+  position: absolute;
+    top: 0;
+    padding: 4px;
+    font-size: 10px;
+    left: 30px;
+}
+
+.followBig {
+  position: static;
 }
 
 .reset {
@@ -31,13 +43,27 @@
     border-color: $darkCyanColor;
 }
 }
+.tab, .tabActive {
+  padding: 5px 30px;
+  color: rgba(0,173,181,.7);
+  border: 2px solid;
+  border-radius: 0;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 20px;
+    border-top: none;
+}
 
 .tab {
-  padding: 5px 30px;
-    color: rgba(0,173,181,.7);
-    border: 2px solid rgba(0,173,181,.7);
-    border-radius: 0;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom: none;
+  color: rgba(0,173,181,.7);
+  border-color: rgba(0,173,181,.7);
+
+  &:hover {
+    color: $darkCyanColor;
+    border-color: $darkCyanColor;
+  }
+}
+
+.tabActive {
+color: $cyanColor;
+border-color: $cyanColor;
 }

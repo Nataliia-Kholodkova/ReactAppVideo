@@ -2,11 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import Shows from '../../Shows/Shows';
 import Aside from '../../Aside/Aside';
+import Error from '../Error/Error';
 import useObserver from '../../../customHooks/useObserver';
 import { setShowsPageActionCreator, setShowsIsLoadActionCreator, getShowsActionCreator, setShowsShouldLoadActionCreator, setShowsLastIndexActionCreator } from '../../../redux/actionCreators/showsActionCreators';
 
 const ShowsPage = ({ isLoad, shows, shouldLoad, page, lastIndex, setShowsLoad, setShows, setPage, setShowsShouldLoad, setShowsLastIndex }) => {
   const lastDivRef = useRef();
+  const [showsToShow, setShowsToShow] = useState([]);
+  const [loadError, setLoadError] = useState(null);
+
   useObserver(lastDivRef, isLoad, () => {
     if (shows.length > 0) {
       if (lastIndex + 10 > shows.length) {
@@ -19,12 +23,14 @@ const ShowsPage = ({ isLoad, shows, shouldLoad, page, lastIndex, setShowsLoad, s
       }
     }
   });
-  const [showsToShow, setShowsToShow] = useState([]);
 
   useEffect(() => {
     if (shouldLoad) {
       setShowsLoad(true);
       setShows(page)
+        .catch((error) => {
+          setLoadError(`Server error: ${error.message}`);
+        })
         .finally(() => {
           setShowsLoad(false);
         });
@@ -38,10 +44,11 @@ const ShowsPage = ({ isLoad, shows, shouldLoad, page, lastIndex, setShowsLoad, s
 
   return (
     <>
+      {(loadError && shows.length === 0) && <Error error={loadError} />}
       <Aside />
       <main className="main mainAside">
         <Shows shows={showsToShow} isLoad={isLoad} />
-        <div className="lastDiv" ref={lastDivRef}></div>
+        {!loadError && <div className="lastDiv" ref={lastDivRef}></div>}
       </main>
     </>
   );

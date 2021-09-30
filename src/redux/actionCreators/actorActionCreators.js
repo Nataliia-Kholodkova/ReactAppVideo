@@ -13,17 +13,21 @@ const setActorCastIsLoadActionCreator = (payload) => ({
   type: ACTOR_SET_CAST_IS_LOAD, payload,
 });
 
+const setActorCastActionCreator = (payload) => ({
+  type: ACTOR_SET_CAST, payload,
+});
+
 const getActorActionCreator = (id) => {
   return (dispatch) => {
     return getActorbyId(id)
-      .then((actor) => dispatch({ type: ACTOR_SET_ACTOR, payload: actor }));
+      .then((actor) => dispatch(setActorActionCreator(actor)));
   };
 };
 
 const getActorCastActionCreator = (id) => {
   return (dispatch) => {
     return getActorCast(id)
-      .then((cast) => dispatch({ type: ACTOR_SET_CAST, payload: cast }));
+      .then((cast) => dispatch(setActorCastActionCreator(cast)));
   };
 };
 

@@ -10,7 +10,7 @@ const NavigationList = ({
   showQuery,
   searchShowHandler,
 }) => {
-  const { user } = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
   return (
     <>
       <ul
@@ -39,7 +39,16 @@ const NavigationList = ({
             All Shows
           </NavLink>
         </li>
-        {!user?.uid && (
+        <li className={styles.navItem}>
+          <NavLink
+            to="/users"
+            className={styles.navLink}
+            activeClassName={styles.navLinkActive}
+          >
+            All Users
+          </NavLink>
+        </li>
+        {!currentUser?.uid && (
           <>
             <li className={`${styles.navItem} ${styles.navItemLink}`}>
               <NavLink to={{
@@ -65,7 +74,7 @@ const NavigationList = ({
             </li>
           </>
         )}
-        {user?.uid && (
+        {currentUser?.uid && (
           <>
             <li className={`${styles.navItem} ${styles.navItemLink}`}>
               <NavLink to={{
@@ -80,11 +89,11 @@ const NavigationList = ({
             </li>
             <li className={`${styles.navItem} ${styles.navItemLink}`}>
               <NavLink
-                to="/profile"
+                to={`/profile/${currentUser.uid}`}
                 className={styles.userLink}
                 activeClassName={styles.userLinkActive}
               >
-                {user.displayName}
+                {currentUser.displayName}
               </NavLink>
             </li>
           </>)}

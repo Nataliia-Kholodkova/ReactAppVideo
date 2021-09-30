@@ -17,6 +17,10 @@
   height: 300px;
 }
 
+.showBigImg {
+  @include animation();
+}
+
 .preloader {
   width: 110px;
 }

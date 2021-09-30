@@ -12,8 +12,8 @@ const setSearchShowsIsLoadActionCreator = (payload) => ({
 const getSearchShowsActionCreator = (query) => {
   return (dispatch) => {
     return getShowByQuery(query)
-      .then((shows) => dispatch({ type: SEARCH_SHOWS_SET_SHOWS, payload: shows }));
+      .then((shows) => dispatch(setSearchShowsActionCreator(shows)));
   };
 };
 
-export { setSearchShowsActionCreator, setSearchShowsIsLoadActionCreator, getSearchShowsActionCreator };
+export { setSearchShowsIsLoadActionCreator, getSearchShowsActionCreator };

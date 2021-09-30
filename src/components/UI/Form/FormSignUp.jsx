@@ -59,13 +59,13 @@ const FormSignUp = () => (
             )}
             />
           <Field
-            name="password"
+            name="passwordConfirm"
             render={({ input, meta }) => (
               <label className={styles.labelText}>
                 <input
                   type="password"
                   {...input}
-                  placeholder="Password"
+                  placeholder="Confirm password"
                   className={`${styles.input} ${submitError ? styles.error : ''}`} />
                   <LockSvg />
                   {(meta.error || meta.submitError) && meta.touched && (
@@ -73,7 +73,7 @@ const FormSignUp = () => (
                   )}
               </label>
             )}/>
-            <Button type="submit" text="SignIn" className="submit" disabled={submitting} />
+            <Button type="submit" text="SignUp" className="submit" disabled={submitting} />
             <Button type="reset" text="Reset" className="reset" disabled={submitting} onClick={form.reset} />
           </form>)
       } />);

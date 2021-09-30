@@ -9,15 +9,19 @@ import { updateProfilePhoto } from '../../../firebaseConf/profileUpdate';
 import Upload from '../../Image/SVG/Upload';
 import Input from '../../UI/Input/Input';
 import Tabs from '../../Tabs/Tabs';
+import Error from '../Error/Error';
 import styles from './ProfilePage.module.css';
 
 const ProfilePage = () => {
   const { currentUser, currentUserProfile } = useContext(AuthContext);
   const [shows, setShows] = useState([]);
   const [showsLoad, setShowsLoad] = useState(true);
+  const [showsError, setShowsError] = useState(null);
   const [friends, setFriends] = useState([]);
   const [friendsLoad, setFriendsLoad] = useState(true);
+  const [friendsError, setFriendsError] = useState(null);
   const [photo, setPohoto] = useState(null);
+  const [updatePhotoError, setUpdatePhotoError] = useState(null);
   const { firstName, lastName, gender, likedShows, country, city, friends: friendsId } = currentUserProfile || {};
 
   useEffect(() => {
@@ -25,6 +29,7 @@ const ProfilePage = () => {
       setShowsLoad(true);
       Promise.all(likedShows.map((id) => getShowById(+id)))
         .then((data) => setShows(data))
+        .catch((error) => setShowsError(`Server error: ${error.message}`))
         .finally(() => setShowsLoad(false));
     }
   }, [likedShows?.length]);
@@ -34,13 +39,16 @@ const ProfilePage = () => {
       setFriendsLoad(true);
       Promise.all(friendsId.map((id) => getUserById(id)))
         .then((data) => setFriends(data))
+        .catch((error) => setFriendsError(`Server error: ${error.message}`))
         .finally(() => setFriendsLoad(false));
     }
   }, [friendsId?.length]);
 
   const upload = (photo) => {
-    setPohoto(URL.createObjectURL(photo));
-    updateProfilePhoto(currentUser, photo);
+    setUpdatePhotoError(null);
+    updateProfilePhoto(currentUser, photo)
+      .then(setPohoto(URL.createObjectURL(photo)))
+      .catch(() => setUpdatePhotoError('Server error. Try to upload later.'));
   };
 
   return (
@@ -65,7 +73,8 @@ const ProfilePage = () => {
               state: { modal: true }
             }} className={styles.buttonLink}>Update Profile</NavLink>
         </div>
-        <Tabs shows={shows} showsLoad={showsLoad} friends={friends} friendsLoad={friendsLoad} currentUserProfile={currentUserProfile} friendsId={friendsId} />
+        <Tabs shows={shows} showsLoad={showsLoad} friends={friends} friendsLoad={friendsLoad} currentUserProfile={currentUserProfile} friendsId={friendsId} showsError={showsError} friendsError={friendsError} />
+        {updatePhotoError && <Error error={updatePhotoError} />}
         </section>
       }
   </>
