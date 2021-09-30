@@ -23,14 +23,12 @@ const SignInPage = ({ isModal }) => {
   });
 
   return (
-    <main className="main mainSingle">
-      <div className={classList.join(' ')} onClick={() => {
-        setVisible(false);
-        isModal ? hist.goBack() : hist.push('/');
-      }}>
-        <FormSignIn />
-      </div>
-    </main>
+    <div className={classList.join(' ')} onClick={() => {
+      setVisible(false);
+      isModal ? hist.goBack() : hist.push('/');
+    }}>
+      <FormSignIn />
+    </div>
   );
 };
 
