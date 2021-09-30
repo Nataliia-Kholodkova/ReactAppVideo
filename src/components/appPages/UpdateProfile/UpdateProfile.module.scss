@@ -21,6 +21,7 @@
   -ms-transform: scale(0);
   -o-transform: scale(0);
   @extend %transition;
+  z-index: 1;
 
   &.visible {
     opacity: 1;

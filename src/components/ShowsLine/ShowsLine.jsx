@@ -11,15 +11,15 @@ const Line = ({ shows, genre, setGenre, isLoad }) => {
     <section className={styles.section}>
       {!isLoad && shows.length > 0
         ? <>
-          <NavLink
-        to={`/shows/${genre}`}
-        onClick={() => setGenre([genre])}
-        className={styles.linkTitle}
-      >
-        {genre}
-        </NavLink>
-          <CarouselConponent items={shows} isActor={false} bigHover />
-        </>
+            <NavLink
+              to={`/shows/${genre}`}
+              onClick={() => setGenre([genre])}
+              className={styles.linkTitle}
+            >
+              {genre}
+            </NavLink>
+            <CarouselConponent items={shows} isActor={false} bigHover />
+          </>
         : null}
     </section>
   );

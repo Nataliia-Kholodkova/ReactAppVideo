@@ -13,6 +13,7 @@ const ShowSmall = ({ show, setFilter, likedShows, user }) => {
   const stars = calculateStars(show.rating.average);
   const isFavourite = likedShows ? likedShows.includes(show.id) : false;
   const [updateError, setUpdateError] = useState(null);
+
   return (
     <section onClick={() => hist.push(`/shows/show/${show.id}`)} className={styles.section}>
       {!show.image?.medium && <h1 className={styles.title}>{show.name}</h1>}

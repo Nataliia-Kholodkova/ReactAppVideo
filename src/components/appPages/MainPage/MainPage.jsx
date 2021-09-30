@@ -11,12 +11,11 @@ import genreNames from '../../../utils/genres';
 const MainPage = ({ shows, isLoad, setShows, setShowsLoad, setGenre }) => {
   const date = new Date().toISOString().split('T')[0];
   const [loadError, setLoadError] = useState(null);
+
   useEffect(() => {
     setShowsLoad(true);
     setShows(date)
-      .catch((error) => {
-        setLoadError(`Server error: ${error.message}`);
-      })
+      .catch((error) => setLoadError(`Server error: ${error.message}`))
       .finally(setShowsLoad(false));
   }, []);
   return (<>
@@ -40,17 +39,11 @@ const MainPage = ({ shows, isLoad, setShows, setShowsLoad, setGenre }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  const setShows = (date) => dispatch(getCurrentShowsActionCreator(date));
-  const setShowsLoad = (flag) => dispatch(setCurrentShowsIsLoadActionCreator(flag));
-  const setGenre = (genre) => dispatch(setFilterByGenreActionCreator(genre));
-
-  return {
-    setShows,
-    setShowsLoad,
-    setGenre,
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setShows: (date) => dispatch(getCurrentShowsActionCreator(date)),
+  setShowsLoad: (flag) => dispatch(setCurrentShowsIsLoadActionCreator(flag)),
+  setGenre: (genre) => dispatch(setFilterByGenreActionCreator(genre)),
+});
 
 const mapStateToProps = (state) => ({ ...state.currentShows });
 

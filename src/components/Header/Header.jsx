@@ -28,11 +28,12 @@ const Header = ({ query, setSearchQuery }) => {
         <NavLink to="/" className={`${styles.navLink} ${styles.homePageLink}`} activeClassName={styles.navLincActive}>
           Home
         </NavLink>
-        <BurgerButton onClick={onMobileMenuButtonClick} className="mobileShow" />
+        <BurgerButton onClick={onMobileMenuButtonClick} className="mobileShow" isOpened={isMobileMenuOpened} />
         <NavigationList
           isMobileMenuOpened={isMobileMenuOpened}
           showQuery={query}
           searchShowHandler={searchShowHandler}
+          mobileClose={onMobileMenuButtonClick}
         />
       </nav>
     </header>

@@ -14,6 +14,7 @@ const ActorPage = ({
 }) => {
   const { actorId } = useParams();
   const { loadError, setLoadError } = useState(null);
+
   useEffect(() => {
     setActorLoad(true);
     setActorCastLoad(true);
@@ -23,7 +24,8 @@ const ActorPage = ({
     setActorCast(actorId)
       .catch((error) => error)
       .finally(() => setActorCastLoad(false));
-  }, [actorId]);
+  }, []);
+
   return (<>
     {loadError && <Error error={loadError} />}
     <main className="main mainSingle">
@@ -34,19 +36,12 @@ const ActorPage = ({
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  const setActor = (id) => dispatch(getActorActionCreator(id));
-  const setActorLoad = (flag) => dispatch(setActorIsLoadActionCreator(flag));
-  const setActorCast = (id) => dispatch(getActorCastActionCreator(id));
-  const setActorCastLoad = (flag) => dispatch(setActorCastIsLoadActionCreator(flag));
-
-  return {
-    setActor,
-    setActorLoad,
-    setActorCast,
-    setActorCastLoad,
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setActor: (id) => dispatch(getActorActionCreator(id)),
+  setActorLoad: (flag) => dispatch(setActorIsLoadActionCreator(flag)),
+  setActorCast: (id) => dispatch(getActorCastActionCreator(id)),
+  setActorCastLoad: (flag) => dispatch(setActorCastIsLoadActionCreator(flag)),
+});
 
 const mapStateToProps = (state) => ({ actor: state.actor });
 

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import FormSignIn from '../../UI/Form/FormSingIn';
 import { onAuthStateChanged } from 'firebase/auth';
 import { firebaseAuth } from '../../../firebaseConf/firebaseConf';
-import styles from './LoginPage.module.css';
+import styles from './SigninPage.module.css';
 
 const SignInPage = ({ isModal }) => {
   const hist = useHistory();

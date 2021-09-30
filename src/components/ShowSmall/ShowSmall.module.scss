@@ -68,16 +68,6 @@
   }
 }
 
-.rating {
-  margin-left: 10px;
-  color: $darkCyanColor;
-
-  @media screen and (min-width: 960px) {
-    margin-left: 0;
-    font-size: 12px;
-  }
-}
-
 .date {
   @include fontView(12px, 300);
   font-style: italic;

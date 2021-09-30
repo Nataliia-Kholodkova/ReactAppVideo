@@ -5,15 +5,16 @@ import maleImg from '../../assets/img/avatar_male.png';
 import femaleImg from '../../assets/img/avatar_female.png';
 import Button from '../UI/Button/Button';
 import Error from '../appPages/Error/Error';
-import styles from './UserSmall.module.css';
 import { getUserPhoto } from '../../utils/getDataFromServer';
 import { updateFriendsOnClick } from '../../utils/listeners';
+import styles from './UserSmall.module.css';
 
 const UserSmall = ({ user, followed, currentUser, currentUserFriendIds }) => {
   const hist = useHistory();
   if (Object.keys(user).length === 0) {
     return null;
   }
+
   const [photo, setPhoto] = useState(null);
   const [updateFriendsError, setUpdateFriendsError] = useState(null);
 
@@ -30,7 +31,8 @@ const UserSmall = ({ user, followed, currentUser, currentUserFriendIds }) => {
         <Image src={photo ?? (user.gender === 'Male'
           ? maleImg
           : femaleImg)} alt={name} className="userSmallImg" />
-        <Button type="button" className="follow" onClick={() => {
+        <Button type="button" className="follow" onClick={(event) => {
+          event.stopPropagation();
           setUpdateFriendsError(null);
           updateFriendsOnClick(followed, currentUserFriendIds, user, currentUser)
             .catch(() => setUpdateFriendsError('Server error. Try Later'));

@@ -11,6 +11,7 @@ const ActorBig = ({ actor, cast }) => {
     return null;
   }
   const { image, name, country: { name: country }, birthday, deathday, gender } = actor;
+
   return (
     <section className={styles.section}>
       <h1 className={styles.title}>{name}</h1>

@@ -7,6 +7,7 @@ const ArrowButton = ({ onClick }) => {
     event.target.closest('button').classList.toggle(styles.close);
     func();
   };
+
   return (
     <button type="button" className={styles.button} name="Show filters" onClick={(e) => toggleClose(e, onClick)}>
       <ArrowSvg />

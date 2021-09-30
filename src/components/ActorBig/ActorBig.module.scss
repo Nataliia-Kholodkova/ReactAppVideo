@@ -42,26 +42,9 @@
   }
 }
 
-.stars {
-  display: flex;
-  align-items: center;
-}
-
-.rating {
-  margin-left: 15px;
-}
-
-.genre {
-  margin-right: 10px;
-}
-
-.container, .stars, .genres {
+.container {
   margin-bottom: 15px;
-}
 
-.container,
-.genres,
-.slide {
   h3, p {
     @extend %reset;
   }
@@ -70,12 +53,4 @@
     font-weight: 600;
     margin-bottom: 5px;
   }
-}
-
-.linkImage {
-  @extend %link;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

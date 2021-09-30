@@ -22,12 +22,12 @@
   text-shadow: -2px -1px $darkColor;
   @extend %transition;
   animation: blink;
-    -webkit-animation: blink;
-    animation-timing-function: linear;
-    animation-duration: 1.5s;
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
-    animation-direction: alternate;
+  -webkit-animation: blink;
+  animation-timing-function: linear;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+  animation-direction: alternate;
 
   &:hover {
     border-bottom-color: $cyanColor;

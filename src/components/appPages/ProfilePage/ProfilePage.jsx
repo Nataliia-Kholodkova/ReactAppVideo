@@ -4,12 +4,12 @@ import { AuthContext } from '../../../context/userAuthContext';
 import Image from '../../Image/Image';
 import maleImg from '../../../assets/img/avatar_male.png';
 import femaleImg from '../../../assets/img/avatar_female.png';
-import { getShowById, getUserById } from '../../../utils/getDataFromServer';
-import { updateProfilePhoto } from '../../../firebaseConf/profileUpdate';
 import Upload from '../../Image/SVG/Upload';
 import Input from '../../UI/Input/Input';
 import Tabs from '../../Tabs/Tabs';
 import Error from '../Error/Error';
+import { getShowById, getUserById } from '../../../utils/getDataFromServer';
+import { updateProfilePhoto } from '../../../firebaseConf/profileUpdate';
 import styles from './ProfilePage.module.css';
 
 const ProfilePage = () => {
@@ -66,15 +66,15 @@ const ProfilePage = () => {
             </div>
           </div>
           <div className={styles.info}>
-          <h1 className={styles.title}>{`${firstName} ${lastName}`}</h1>
-          {(country || city) && <p>{`${country}${city ? `, ${city}` : ''}`}</p>}
-            <NavLink to={{
-              pathname: '/updateProfile',
-              state: { modal: true }
-            }} className={styles.buttonLink}>Update Profile</NavLink>
-        </div>
-        <Tabs shows={shows} showsLoad={showsLoad} friends={friends} friendsLoad={friendsLoad} currentUserProfile={currentUserProfile} friendsId={friendsId} showsError={showsError} friendsError={friendsError} />
-        {updatePhotoError && <Error error={updatePhotoError} />}
+            <h1 className={styles.title}>{`${firstName} ${lastName}`}</h1>
+            {(country || city) && <p>{`${country}${city ? `, ${city}` : ''}`}</p>}
+              <NavLink to={{
+                pathname: '/updateProfile',
+                state: { modal: true }
+              }} className={styles.buttonLink}>Update Profile</NavLink>
+          </div>
+          <Tabs shows={shows} showsLoad={showsLoad} friends={friends} friendsLoad={friendsLoad} currentUserProfile={currentUserProfile} friendsId={friendsId} showsError={showsError} friendsError={friendsError} />
+          {updatePhotoError && <Error error={updatePhotoError} />}
         </section>
       }
   </>

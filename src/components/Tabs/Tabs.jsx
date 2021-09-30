@@ -19,7 +19,7 @@ const Tabs = ({ shows, showsLoad, friends, friendsLoad, currentUserProfile, frie
       </div>}
       {(friendsTabOpened && !friendsError) && <div className={styles.contentContainer}>
         {friends.length === 0 && !friendsLoad && <h2 className={styles.title}>You don&apos;t have friends yet</h2>}
-        <Users users={friends} isLoad={friendsLoad} currentUserFriendIds={friendsId} currentUser={currentUserProfile} />
+        <Users users={friends} currentUserFriendIds={friendsId} currentUser={currentUserProfile} />
       </div>}
     </div>
   );

@@ -49,18 +49,18 @@
 
 .photoUpload {
   position: absolute;
-    width: 60%;
-    bottom: -16px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-evenly;
+  width: 60%;
+  bottom: -16px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
 
-    @media screen and (min-width: 689px) {
-      bottom: 3px;
-    }
+  @media screen and (min-width: 689px) {
+    bottom: 3px;
+  }
 }
 
 .info {
@@ -90,5 +90,5 @@
 
   &:hover {
     background-color: $cyanColor;
-}
+  }
 }

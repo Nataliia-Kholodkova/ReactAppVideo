@@ -1,6 +1,6 @@
 # Movies Service
 
-- Demo: -
+- Demo: https://fir-react-video-app.web.app
 
 This project simple front end app with idea of simulating Movies/Shows service with further possibility to make streaming service. Used React and CSS (Flexbox), [The Movie Api](https://www.tvmaze.com/api) to search for movies and display details.
 

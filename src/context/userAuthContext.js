@@ -16,7 +16,8 @@ const AuthContextProvider = ({ children }) => {
         if (data.exists()) {
           setProfile(data.data());
         }
-      });
+      })
+      .catch((error) => error);
   };
 
   useEffect(() => {

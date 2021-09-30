@@ -4,13 +4,13 @@ import { AuthContext } from '../../../context/userAuthContext';
 import Image from '../../Image/Image';
 import maleImg from '../../../assets/img/avatar_male.png';
 import femaleImg from '../../../assets/img/avatar_female.png';
-import { getShowById, getUserById, getUserPhoto } from '../../../utils/getDataFromServer';
 import Tabs from '../../Tabs/Tabs';
 import Preloader from '../../UI/Preloader/Preloader';
 import Button from '../../UI/Button/Button';
 import Accordeon from '../../UI/Accordeon/Accordeon';
 import Error from '../Error/Error';
 import { updateFriendsOnClick } from '../../../utils/listeners';
+import { getShowById, getUserById, getUserPhoto } from '../../../utils/getDataFromServer';
 import styles from './UserPage.module.css';
 
 const UserPage = () => {
@@ -67,34 +67,31 @@ const UserPage = () => {
     }
   }, [friendsId?.length]);
 
-  return (
-    <>
-      {(user && !userError) &&
-        <section className={styles.section}>
-          <div className={styles.imageContainer}>
-            <Image src={photo ?? (gender && gender === 'Female'
-              ? femaleImg
-              : maleImg)} alt={`${firstName} ${lastName}`} className="showBigImg" />
-          </div>
-          <div className={styles.info}>
+  return (<>
+    {(user && !userError) &&
+      <section className={styles.section}>
+        <div className={styles.imageContainer}>
+          <Image src={photo ?? (gender && gender === 'Female'
+            ? femaleImg
+            : maleImg)} alt={`${firstName} ${lastName}`} className="showBigImg" />
+        </div>
+        <div className={styles.info}>
           <h1 className={styles.title}>{`${firstName} ${lastName}`}</h1>
           {(country || city) && <p>{`${country}${city ? `, ${city}` : ''}`}</p>}
           {phone && <Accordeon items={[phone]} />}
-          <Button type="button" className="followBig" onClick={() => {
-            setUpdateFriendsError(null);
-            updateFriendsOnClick(followed, friendsId, user, currentUser)
-              .catch(() => setUpdateFriendsError('Server error. Try Later'));
-          }
-        } text={followed ? 'Unfollow' : 'Follow'} />
+        <Button type="button" className="followBig" onClick={(event) => {
+          event.stopPropagation();
+          setUpdateFriendsError(null);
+          updateFriendsOnClick(followed, friendsId, user, currentUser)
+            .catch(() => setUpdateFriendsError('Server error. Try Later'));
+        }} text={followed ? 'Unfollow' : 'Follow'} />
         </div>
         <Tabs shows={shows} showsLoad={showsLoad} friends={friends} friendsLoad={friendsLoad} currentUserProfile={currentUserProfile} friendsId={friendsId} showsError={showsError} friendsError={friendsError} />
-        </section>
-      }
+      </section>}
       {userError && <Error error={userError} />}
       {userLoad && <Preloader className="preloader" />}
       {updateFriendsError && <Error error={updateFriendsError} />}
-  </>
-  );
+  </>);
 };
 
 export default UserPage;

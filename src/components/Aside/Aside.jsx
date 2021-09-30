@@ -39,13 +39,9 @@ const Aside = ({ setRatingOrder, setPremierDateOrder }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  const setRatingOrder = (order) => dispatch(setFilterByRatingActionCreator(order));
-  const setPremierDateOrder = (order) => dispatch(setFilterByRPremierDateActionCreator(order));
-
-  return {
-    setRatingOrder, setPremierDateOrder
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setRatingOrder: (order) => dispatch(setFilterByRatingActionCreator(order)),
+  setPremierDateOrder: (order) => dispatch(setFilterByRPremierDateActionCreator(order)),
+});
 
 export default connect(null, mapDispatchToProps)(Aside);

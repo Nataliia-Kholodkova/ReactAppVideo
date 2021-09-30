@@ -26,6 +26,7 @@ const SignOutPage = ({ isModal }) => {
     });
     return subscr;
   });
+
   return (
     <div className={classList.join(' ')} onClick={() => {
       setVisible(false);

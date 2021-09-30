@@ -9,8 +9,10 @@ const NavigationList = ({
   isMobileMenuOpened,
   showQuery,
   searchShowHandler,
+  mobileClose
 }) => {
   const { currentUser } = useContext(AuthContext);
+
   return (
     <>
       <ul
@@ -35,17 +37,9 @@ const NavigationList = ({
             to="/shows"
             className={styles.navLink}
             activeClassName={styles.navLinkActive}
+            onClick={() => mobileClose()}
           >
             All Shows
-          </NavLink>
-        </li>
-        <li className={styles.navItem}>
-          <NavLink
-            to="/users"
-            className={styles.navLink}
-            activeClassName={styles.navLinkActive}
-          >
-            All Users
           </NavLink>
         </li>
         {!currentUser?.uid && (
@@ -57,6 +51,7 @@ const NavigationList = ({
               }}
               activeClassName={styles.navLinkActive}
               className={styles.navLink}
+              onClick={() => mobileClose()}
               >
                 Sign In
               </NavLink>
@@ -68,6 +63,7 @@ const NavigationList = ({
               }}
               activeClassName={styles.navLinkActive}
               className={styles.navLink}
+              onClick={() => mobileClose()}
               >
                 Sign Up
               </NavLink>
@@ -76,6 +72,16 @@ const NavigationList = ({
         )}
         {currentUser?.uid && (
           <>
+            <li className={styles.navItem}>
+              <NavLink
+                to="/users"
+                className={styles.navLink}
+                activeClassName={styles.navLinkActive}
+                onClick={() => mobileClose()}
+              >
+                All Users
+              </NavLink>
+            </li>
             <li className={`${styles.navItem} ${styles.navItemLink}`}>
               <NavLink to={{
                 pathname: '/signout',
@@ -83,6 +89,7 @@ const NavigationList = ({
               }}
               activeClassName={styles.navLinkActive}
               className={styles.navLink}
+              onClick={() => mobileClose()}
               >
                 Sign Out
               </NavLink>
@@ -92,6 +99,7 @@ const NavigationList = ({
                 to={`/profile/${currentUser.uid}`}
                 className={styles.userLink}
                 activeClassName={styles.userLinkActive}
+                onClick={() => mobileClose()}
               >
                 {currentUser.displayName}
               </NavLink>

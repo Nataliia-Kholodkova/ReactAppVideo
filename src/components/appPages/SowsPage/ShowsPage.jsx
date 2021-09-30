@@ -54,21 +54,13 @@ const ShowsPage = ({ isLoad, shows, shouldLoad, page, lastIndex, setShowsLoad, s
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
-  const setShows = (page) => dispatch(getShowsActionCreator(page));
-  const setShowsLoad = (flag) => dispatch(setShowsIsLoadActionCreator(flag));
-  const setShowsShouldLoad = (flag) => dispatch(setShowsShouldLoadActionCreator(flag));
-  const setPage = (page) => dispatch(setShowsPageActionCreator(page));
-  const setShowsLastIndex = (index) => dispatch(setShowsLastIndexActionCreator(index));
-
-  return {
-    setShows,
-    setPage,
-    setShowsLoad,
-    setShowsShouldLoad,
-    setShowsLastIndex
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  setShows: (page) => dispatch(getShowsActionCreator(page)),
+  setShowsLoad: (flag) => dispatch(setShowsIsLoadActionCreator(flag)),
+  setShowsShouldLoad: (flag) => dispatch(setShowsShouldLoadActionCreator(flag)),
+  setPage: (page) => dispatch(setShowsPageActionCreator(page)),
+  setShowsLastIndex: (index) => dispatch(setShowsLastIndexActionCreator(index)),
+});
 
 const mapStateToProps = (state) => ({ ...state.shows });
 

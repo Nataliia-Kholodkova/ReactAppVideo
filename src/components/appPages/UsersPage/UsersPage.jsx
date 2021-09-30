@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../../../context/userAuthContext';
 import Users from '../../Users/Users';
 import Error from '../Error/Error';
+import Preloader from '../../UI/Preloader/Preloader';
 import { getUsers } from '../../../utils/getDataFromServer';
 
 const UsersPage = () => {
@@ -19,14 +20,16 @@ const UsersPage = () => {
       .finally(() => setIsLoad(false));
   }, []);
 
-  return (
-    <>
-      {loadError && <Error error={loadError} />}
-      <main className="main mainAside">
-        {!loadError && <Users users={users} isLoad={isLoad} currentUserFriendIds={friends || []} currentUser={currentUser} />}
-      </main>
-    </>
-  );
+  return (<>
+    {isLoad
+      ? <Preloader className="preloader" />
+      : <>
+        {loadError && <Error error={loadError} />}
+        <main className="main mainAside">
+          {!loadError && <Users users={users} isLoad={isLoad} currentUserFriendIds={friends || []} currentUser={currentUser} />}
+        </main>
+      </>}
+    </>);
 };
 
 export default UsersPage;

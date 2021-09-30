@@ -51,10 +51,6 @@
   align-items: center;
 }
 
-.rating {
-  margin-left: 15px;
-}
-
 .genre {
   margin-right: 10px;
 }
@@ -74,11 +70,4 @@
     font-weight: 600;
     margin-bottom: 5px;
   }
-}
-
-.linkImage {
-  @extend %link;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

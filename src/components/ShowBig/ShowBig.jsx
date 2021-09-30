@@ -20,6 +20,7 @@ const ShowBig = ({ show }) => {
   const isFavourite = likedShows ? likedShows.includes(show.id) : false;
   const { image, name, rating: { average }, premiered, genres, status, schedule: { time, days }, summary, _embedded: { cast } } = show;
   const stars = calculateStars(average);
+
   return (
     <section className={styles.section}>
       <h1 className={styles.title}>{name}</h1>
