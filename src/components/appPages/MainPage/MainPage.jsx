@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import Line from '../../ShowsLine/ShowsLine';
 import Preloader from '../../UI/Preloader/Preloader';
+import Error from '../Error/Error';
 import { useFilteredByGenreShows, useSortByPremierDateShows } from '../../../customHooks/useFilterShows';
 import { setFilterByGenreActionCreator } from '../../../redux/actionCreators/filtersActionCreators';
 import { setCurrentShowsIsLoadActionCreator, getCurrentShowsActionCreator } from '../../../redux/actionCreators/currentShowsActionCreators';
@@ -9,14 +10,19 @@ import genreNames from '../../../utils/genres';
 
 const MainPage = ({ shows, isLoad, setShows, setShowsLoad, setGenre }) => {
   const date = new Date().toISOString().split('T')[0];
+  const [loadError, setLoadError] = useState(null);
   useEffect(() => {
     setShowsLoad(true);
     setShows(date)
+      .catch((error) => {
+        setLoadError(`Server error: ${error.message}`);
+      })
       .finally(setShowsLoad(false));
   }, []);
-  return (
+  return (<>
+    {loadError && <Error error={loadError} />}
     <main className="main mainSingle">
-      <h1 className="mainTitle">You can watch now!</h1>
+      {!loadError && <h1 className="mainTitle">You can watch now!</h1>}
       {isLoad
         ? <Preloader className="preloader" />
         : <>{genreNames.map((genreName) => (
@@ -30,6 +36,7 @@ const MainPage = ({ shows, isLoad, setShows, setShowsLoad, setGenre }) => {
         ))
       }</>}
     </main>
+    </>
   );
 };
 

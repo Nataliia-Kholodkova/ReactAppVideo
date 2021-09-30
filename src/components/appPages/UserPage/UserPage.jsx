@@ -1,28 +1,51 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { AuthContext } from '../../../context/userAuthContext';
 import Image from '../../Image/Image';
 import maleImg from '../../../assets/img/avatar_male.png';
 import femaleImg from '../../../assets/img/avatar_female.png';
-import { getShowById, getUserById } from '../../../utils/getDataFromServer';
-import { updateProfilePhoto } from '../../../firebaseConf/profileUpdate';
-import Upload from '../../Image/SVG/Upload';
-import Input from '../../UI/Input/Input';
+import { getShowById, getUserById, getUserPhoto } from '../../../utils/getDataFromServer';
 import Tabs from '../../Tabs/Tabs';
+import Preloader from '../../UI/Preloader/Preloader';
+import Button from '../../UI/Button/Button';
+import Accordeon from '../../UI/Accordeon/Accordeon';
 import Error from '../Error/Error';
-import styles from './ProfilePage.module.css';
+import { updateFriendsOnClick } from '../../../utils/listeners';
+import styles from './UserPage.module.css';
 
-const ProfilePage = () => {
+const UserPage = () => {
   const { currentUser, currentUserProfile } = useContext(AuthContext);
+  const { uid } = useParams();
+  const [user, setUser] = useState();
+  const [userLoad, setUserLoad] = useState(false);
   const [shows, setShows] = useState([]);
   const [showsLoad, setShowsLoad] = useState(true);
-  const [showsError, setShowsError] = useState(null);
   const [friends, setFriends] = useState([]);
   const [friendsLoad, setFriendsLoad] = useState(true);
+  const [photo, setPhoto] = useState(null);
+  const [userError, setUserError] = useState(null);
+  const [updateFriendsError, setUpdateFriendsError] = useState(null);
+  const [showsError, setShowsError] = useState(null);
   const [friendsError, setFriendsError] = useState(null);
-  const [photo, setPohoto] = useState(null);
-  const [updatePhotoError, setUpdatePhotoError] = useState(null);
-  const { firstName, lastName, gender, likedShows, country, city, friends: friendsId } = currentUserProfile || {};
+  const { firstName, lastName, gender, likedShows, country, city, friends: friendsId, phone } = user || {};
+
+  const followed = currentUserProfile?.friends?.includes(uid);
+
+  useEffect(() => {
+    setUserLoad(true);
+    getUserById(uid)
+      .then((data) => setUser(data))
+      .catch((error) => {
+        setUserError(`Server error: ${error.message}`);
+      })
+      .finally(() => setUserLoad(false));
+  }, [uid]);
+
+  useEffect(() => {
+    getUserPhoto(uid)
+      .then((src) => setPhoto(src))
+      .catch((error) => error);
+  }, []);
 
   useEffect(() => {
     if (likedShows) {
@@ -44,41 +67,34 @@ const ProfilePage = () => {
     }
   }, [friendsId?.length]);
 
-  const upload = (photo) => {
-    setUpdatePhotoError(null);
-    updateProfilePhoto(currentUser, photo)
-      .then(setPohoto(URL.createObjectURL(photo)))
-      .catch(() => setUpdatePhotoError('Server error. Try to upload later.'));
-  };
-
   return (
     <>
-      {currentUser && currentUserProfile &&
+      {(user && !userError) &&
         <section className={styles.section}>
           <div className={styles.imageContainer}>
-            <Image src={photo ?? currentUser?.photoURL ?? (gender && gender === 'Female'
+            <Image src={photo ?? (gender && gender === 'Female'
               ? femaleImg
               : maleImg)} alt={`${firstName} ${lastName}`} className="showBigImg" />
-            <div className={styles.photoUpload}>
-              <Input type="file" className="fileLabel" inputClassName="visually-hidden" onChange={upload} name="photo">
-                <Upload />
-              </Input>
-            </div>
           </div>
           <div className={styles.info}>
           <h1 className={styles.title}>{`${firstName} ${lastName}`}</h1>
           {(country || city) && <p>{`${country}${city ? `, ${city}` : ''}`}</p>}
-            <NavLink to={{
-              pathname: '/updateProfile',
-              state: { modal: true }
-            }} className={styles.buttonLink}>Update Profile</NavLink>
+          {phone && <Accordeon items={[phone]} />}
+          <Button type="button" className="followBig" onClick={() => {
+            setUpdateFriendsError(null);
+            updateFriendsOnClick(followed, friendsId, user, currentUser)
+              .catch(() => setUpdateFriendsError('Server error. Try Later'));
+          }
+        } text={followed ? 'Unfollow' : 'Follow'} />
         </div>
         <Tabs shows={shows} showsLoad={showsLoad} friends={friends} friendsLoad={friendsLoad} currentUserProfile={currentUserProfile} friendsId={friendsId} showsError={showsError} friendsError={friendsError} />
-        {updatePhotoError && <Error error={updatePhotoError} />}
         </section>
       }
+      {userError && <Error error={userError} />}
+      {userLoad && <Preloader className="preloader" />}
+      {updateFriendsError && <Error error={updateFriendsError} />}
   </>
   );
 };
 
-export default ProfilePage;
+export default UserPage;

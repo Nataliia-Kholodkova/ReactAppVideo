@@ -39,6 +39,15 @@ const NavigationList = ({
             All Shows
           </NavLink>
         </li>
+        <li className={styles.navItem}>
+          <NavLink
+            to="/users"
+            className={styles.navLink}
+            activeClassName={styles.navLinkActive}
+          >
+            All Users
+          </NavLink>
+        </li>
         {!currentUser?.uid && (
           <>
             <li className={`${styles.navItem} ${styles.navItemLink}`}>

@@ -4,7 +4,7 @@ import Users from '../Users/Users';
 import Shows from '../Shows/Shows';
 import styles from './Tabs.module.css';
 
-const Tabs = ({ shows, showsLoad, friends, friendsLoad, currentUserProfile, friendsId }) => {
+const Tabs = ({ shows, showsLoad, friends, friendsLoad, currentUserProfile, friendsId, showsError, friendsError }) => {
   const [friendsTabOpened, setFriendsTabOpened] = useState(false);
 
   return (
@@ -13,11 +13,11 @@ const Tabs = ({ shows, showsLoad, friends, friendsLoad, currentUserProfile, frie
         <Button type="button" text="My shows" onClick={() => { setFriendsTabOpened(false); }} className={`tab${friendsTabOpened ? '' : 'Active'}`} />
         <Button type="button" text="My friends" onClick={() => { setFriendsTabOpened(true); }} className={`tab${friendsTabOpened ? 'Active' : ''}`} />
       </div>
-      {!friendsTabOpened && <div className={styles.contentContainer}>
+      {(!friendsTabOpened && !showsError) && <div className={styles.contentContainer}>
         {shows.length === 0 && !showsLoad && <h2 className={styles.title}>You don&apos;t have favourite shows yet</h2>}
         <Shows shows={shows} isLoad={showsLoad} />
       </div>}
-      {friendsTabOpened && <div className={styles.contentContainer}>
+      {(friendsTabOpened && !friendsError) && <div className={styles.contentContainer}>
         {friends.length === 0 && !friendsLoad && <h2 className={styles.title}>You don&apos;t have friends yet</h2>}
         <Users users={friends} isLoad={friendsLoad} currentUserFriendIds={friendsId} currentUser={currentUserProfile} />
       </div>}

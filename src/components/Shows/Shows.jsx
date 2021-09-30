@@ -5,7 +5,6 @@ import Preloader from '../UI/Preloader/Preloader';
 import { useSortedAndSelectedShows } from '../../customHooks/useFilterShows';
 import { setFilterByGenreActionCreator } from '../../redux/actionCreators/filtersActionCreators';
 import { AuthContext } from '../../context/userAuthContext';
-import { updateFavouriteShows } from '../../firebaseConf/profileUpdate';
 
 const Shows = ({ shows, isLoad, genres, rating, premierDate, setFilter }) => {
   const newShows = useSortedAndSelectedShows(shows, genres, rating, premierDate);
@@ -13,7 +12,7 @@ const Shows = ({ shows, isLoad, genres, rating, premierDate, setFilter }) => {
   const { likedShows } = currentUserProfile || [];
   return (
     <>
-      {newShows.length > 0 && newShows.map((show) => <ShowSmall show={show} key={show.id} setFilter={setFilter} likedShows={likedShows} user={currentUser} setLiked={updateFavouriteShows} />)}
+      {newShows.length > 0 && newShows.map((show) => <ShowSmall show={show} key={show.id} setFilter={setFilter} likedShows={likedShows} user={currentUser} />)}
       {isLoad && <Preloader className="preloader" />}
     </>
   );

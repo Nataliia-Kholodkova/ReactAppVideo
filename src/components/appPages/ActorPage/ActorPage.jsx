@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ActorBig from '../../ActorBig/ActorBig';
 import Preloader from '../../UI/Preloader/Preloader';
+import Error from '../Error/Error';
 import { setActorIsLoadActionCreator, getActorActionCreator, setActorCastIsLoadActionCreator, getActorCastActionCreator } from '../../../redux/actionCreators/actorActionCreators';
 
 const ActorPage = ({
@@ -12,20 +13,24 @@ const ActorPage = ({
   setActorCastLoad
 }) => {
   const { actorId } = useParams();
+  const { loadError, setLoadError } = useState(null);
   useEffect(() => {
     setActorLoad(true);
     setActorCastLoad(true);
     setActor(actorId)
+      .catch((error) => setLoadError(`Server error: ${error.message}`))
       .finally(() => setActorLoad(false));
     setActorCast(actorId)
+      .catch((error) => error)
       .finally(() => setActorCastLoad(false));
   }, [actorId]);
-  return (
+  return (<>
+    {loadError && <Error error={loadError} />}
     <main className="main mainSingle">
-      {actor.isLoad || actor.isCastLoad
+      {(actor.isLoad || actor.isCastLoad)
         ? <Preloader className="preloader" />
-        : <ActorBig actor={actor.actor} cast={actor.cast} />}
-    </main>
+        : <>{!loadError && <ActorBig actor={actor.actor} cast={actor.cast} />}</>}
+    </main></>
   );
 };
 

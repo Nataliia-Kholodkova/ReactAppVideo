@@ -1,5 +1,6 @@
 import * as axios from 'axios';
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
+import { ref, getStorage, getDownloadURL } from '@firebase/storage';
 import { firebaseFirestore } from '../firebaseConf/firebaseConf';
 
 const HTTP_AXIOS = axios.create({
@@ -38,12 +39,6 @@ const getShowByQuery = (query) => {
     .then((data) => data.map((item) => item.show));
 };
 
-const getActors = (query) => {
-  return HTTP_AXIOS.get(`search/people?q=${query}`)
-    .then(data => data.data)
-    .then((data) => data.map((item) => item.person));
-};
-
 const getActorbyId = (actorId) => {
   return HTTP_AXIOS.get(`people/${actorId}`)
     .then(data => data.data);
@@ -76,4 +71,9 @@ const getUsers = () => {
     });
 };
 
-export { getActorbyId, getActors, getShowById, getShows, getShowByQuery, getActorCast, getCurrentShows, getUserById, getUsers };
+const getUserPhoto = (uid) => {
+  const storageRef = ref(getStorage(), `userProfile/${uid}`);
+  return getDownloadURL(storageRef);
+};
+
+export { getActorbyId, getShowById, getShows, getShowByQuery, getActorCast, getCurrentShows, getUserById, getUsers, getUserPhoto };

@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { AuthContext } from '../../context/userAuthContext';
 import Parser from 'html-react-parser';
 import CarouselConponent from '../UI/Carousel/CarouselComponent';
 import Image from '../Image/Image';
 import noImg from '../../assets/img/no-image.svg';
+import Heart from '../Image/SVG/Heart';
+import Error from '../appPages/Error/Error';
 import calculateStars from '../../utils/calculateRatingStars';
+import { heartOnClick } from '../../utils/listeners';
 import styles from './ShowBig.module.css';
 
 const ShowBig = ({ show }) => {
   if (Object.keys(show).length === 0) {
     return null;
   }
+  const [updateError, setUpdateError] = useState(null);
+  const { currentUser, currentUserProfile } = useContext(AuthContext);
+  const { likedShows } = currentUserProfile || {};
+  const isFavourite = likedShows ? likedShows.includes(show.id) : false;
   const { image, name, rating: { average }, premiered, genres, status, schedule: { time, days }, summary, _embedded: { cast } } = show;
   const stars = calculateStars(average);
   return (
@@ -41,12 +49,22 @@ const ShowBig = ({ show }) => {
             ? <p>{status}</p>
             : <p>{time}, {days.map((day) => <span key={day}>{day}</span>)}</p>
           }
+          {currentUser && <button className={styles.favouriteLink} onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            setUpdateError(null);
+            heartOnClick(currentUser, show, isFavourite, likedShows)
+              .catch(() => setUpdateError('Server error. Try Later'));
+          }}>
+        <Heart className={isFavourite ? 'favourite' : 'usual'} />
+        </button>}
         </div>
       </div>
       <div className={styles.container}>
         {Parser(summary)}
       </div>
       <CarouselConponent items={cast} isActor={true} />
+      {updateError && <Error error={updateError} />}
     </section>
   );
 };

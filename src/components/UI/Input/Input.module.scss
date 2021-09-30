@@ -31,6 +31,7 @@
 .fileLabel {
     width: fit-content;
     cursor: pointer;
+
     svg {
         width: 45px;
         height: 45px;
@@ -44,7 +45,6 @@ input[type="file"] {
 
 .input,
 .input:-webkit-autofill {
-// .input:-webkit-file-upload-button {
     padding: 5px 1px;
     width: 100%;
     margin-right: 20px;

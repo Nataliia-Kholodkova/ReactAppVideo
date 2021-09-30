@@ -9,11 +9,15 @@
   align-items: center;
   @include animation();
 
-  @media screen and(min-width: 689px) {
+  @media screen and(min-width: 469px) {
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-evenly;
     align-content: center;
+  }
+
+  @media screen and (min-width: 689px) {
+    justify-content: center;
   }
 }
 
@@ -46,13 +50,17 @@
 .photoUpload {
   position: absolute;
     width: 60%;
-    bottom: 3px;
+    bottom: -16px;
     left: 0;
     right: 0;
     margin: 0 auto;
     display: flex;
     align-items: flex-start;
     justify-content: space-evenly;
+
+    @media screen and (min-width: 689px) {
+      bottom: 3px;
+    }
 }
 
 .info {

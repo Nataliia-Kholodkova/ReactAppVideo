@@ -14,6 +14,7 @@ import SignInPage from '../appPages/SingInPage/SignInPage';
 import SignOutPage from '../appPages/SignOutPage/SignOutPage';
 import UpdateProfile from '../appPages/UpdateProfile/UpdateProfile';
 import UsersPage from '../appPages/UsersPage/UsersPage';
+import UserPage from '../appPages/UserPage/UserPage';
 import styles from './App.module.css';
 
 const App = () => {
@@ -55,7 +56,8 @@ const App = () => {
             <Route exact path="/search/shows/:query" render={() => <ShowsResults />} />
             <Route exact path="/shows/show/:showId" render={() => <ShowPage />} />
             <Route exact path="/actors/:actorId" render={() => <ActorPage />} />
-            <Route exact path="/profile/:uid" render={() => authorized ? <ProfilePage /> : <SignInPage />} />
+          <Route exact path="/profile/:uid" render={() => authorized ? <ProfilePage /> : <SignInPage />} />
+          <Route exact path="/users/:uid" render={() => authorized ? <UserPage /> : <SignInPage />} />
             <Route exact path="/signup" render={() => !authorized ? <SignUpPage /> : <ProfilePage />} />
             <Route exact path="/signin" render={() => authorized ? <SignInPage /> : <ProfilePage />} />
             <Route exact path="/signout" render={() => authorized ? <SignOutPage /> : <SignInPage />} />
