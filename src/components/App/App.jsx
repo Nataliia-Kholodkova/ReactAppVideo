@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { onAuthStateChanged } from '@firebase/auth';
 import { firebaseAuth } from '../../firebaseConf/firebaseConf';
@@ -6,16 +6,18 @@ import Header from '../Header/Header';
 import ShowsResults from '../appPages/SearchResults/ShowsResults/ShowsResults';
 import ShowsPage from '../appPages/SowsPage/ShowsPage';
 import ShowPage from '../appPages/ShowPage/ShowPage';
-import ActorPage from '../appPages/ActorPage/ActorPage';
 import MainPage from '../appPages/MainPage/MainPage';
-import ProfilePage from '../appPages/ProfilePage/ProfilePage';
-import SignUpPage from '../appPages/SignUpPage/SignUpPage';
-import SignInPage from '../appPages/SingInPage/SignInPage';
-import SignOutPage from '../appPages/SignOutPage/SignOutPage';
-import UpdateProfile from '../appPages/UpdateProfile/UpdateProfile';
 import UsersPage from '../appPages/UsersPage/UsersPage';
-import UserPage from '../appPages/UserPage/UserPage';
+import Preloader from '../UI/Preloader/Preloader';
 import styles from './App.module.css';
+
+const ActorPage = lazy(() => import('../appPages/ActorPage/ActorPage'));
+const SignUpPage = lazy(() => import('../appPages/SignUpPage/SignUpPage'));
+const SignInPage = lazy(() => import('../appPages/SingInPage/SignInPage'));
+const SignOutPage = lazy(() => import('../appPages/SignOutPage/SignOutPage'));
+const UpdateProfile = lazy(() => import('../appPages/UpdateProfile/UpdateProfile'));
+const UserPage = lazy(() => import('../appPages/UserPage/UserPage'));
+const ProfilePage = lazy(() => import('../appPages/ProfilePage/ProfilePage'));
 
 const App = () => {
   const history = useHistory();
@@ -56,21 +58,68 @@ const App = () => {
             <Route exact path="/shows/:genre" render={() => <ShowsPage />} />
             <Route exact path="/search/shows/:query" render={() => <ShowsResults />} />
             <Route exact path="/shows/show/:showId" render={() => <ShowPage />} />
-            <Route exact path="/actors/:actorId" render={() => <ActorPage />} />
-            <Route exact path="/profile/:uid" render={() => authorized ? <ProfilePage /> : <SignInPage />} />
-            <Route exact path="/users/:uid" render={() => authorized ? <UserPage /> : <SignInPage />} />
-            <Route exact path="/signup" render={() => !authorized ? <SignUpPage /> : <ProfilePage />} />
-            <Route exact path="/signin" render={() => authorized ? <SignInPage /> : <ProfilePage />} />
-            <Route exact path="/signout" render={() => authorized ? <SignOutPage /> : <SignInPage />} />
-            <Route exact path="/updateProfile" render={() => authorized ? <UpdateProfile /> : <SignInPage />} />
-            <Route exact path="/users" render={() => authorized ? <UsersPage /> : <SignInPage />} />
+          <Route exact path="/actors/:actorId" render={() => (
+            <Suspense fallback={<Preloader className="preloader" />}>
+              <ActorPage />
+            </Suspense>
+          )} />
+          <Route exact path="/profile/:uid" render={() => (
+            authorized
+              ? <Suspense fallback={<Preloader className="preloader" />}>
+                  <ProfilePage />
+                </Suspense>
+              : <Suspense fallback={<Preloader className="preloader" />}>
+                <SignInPage />
+              </Suspense>
+          )} />
+          <Route exact path="/users/:uid" render={() => (
+            authorized
+              ? <Suspense fallback={<Preloader className="preloader" />}>
+                <UserPage />
+              </Suspense>
+              : <Suspense fallback={<Preloader className="preloader" />}>
+                <SignInPage />
+              </Suspense>
+          )} />
+            <Route exact path="/signup" render={() => (
+              !authorized
+                ? <Suspense fallback={<Preloader className="preloader" />}>
+                  <SignUpPage />
+                </Suspense>
+                : <Suspense fallback={<Preloader className="preloader" />}>
+                  <ProfilePage />
+                </Suspense>
+            )} />
+            <Route exact path="/signin" render={() => (
+              authorized
+                ? <Suspense fallback={<Preloader className="preloader" />}>
+                <SignInPage />
+                </Suspense>
+                : <Suspense fallback={<Preloader className="preloader" />}>
+              <ProfilePage /></Suspense>)} />
+            <Route exact path="/signout" render={() => (
+              authorized
+                ? <Suspense fallback={<Preloader className="preloader" />}>
+              <SignOutPage /> </Suspense>
+                : <Suspense fallback={<Preloader className="preloader" />}>
+              <SignInPage /></Suspense>)} />
+            <Route exact path="/updateProfile" render={() => (
+              authorized
+                ? <Suspense fallback={<Preloader className="preloader" />}>
+              <UpdateProfile /> </Suspense>
+                : <Suspense fallback={<Preloader className="preloader" />}>
+              <SignInPage /></Suspense>)} />
+            <Route exact path="/users" render={() => authorized
+              ? <UsersPage />
+              : <Suspense fallback={<Preloader className="preloader" />}>
+            <SignInPage /></Suspense>} />
           </Switch>
           {isModal
             ? <>
-              <Route exact path="/signup" render={() => <SignUpPage isModal />} />
-              <Route exact path="/signin" render={() => <SignInPage isModal />} />
-              <Route exact path="/signout" render={() => <SignOutPage isModal />} />
-              <Route exact path="/updateProfile" render={() => <UpdateProfile isModal />} />
+              <Route exact path="/signup" render={() => <Suspense fallback={<Preloader className="preloader" />}><SignUpPage isModal /></Suspense>} />
+              <Route exact path="/signin" render={() => <Suspense fallback={<Preloader className="preloader" />}><SignInPage isModal /></Suspense>} />
+              <Route exact path="/signout" render={() => <Suspense fallback={<Preloader className="preloader" />}><SignOutPage isModal /></Suspense>} />
+              <Route exact path="/updateProfile" render={() => <Suspense fallback={<Preloader className="preloader" />}><UpdateProfile isModal /></Suspense>} />
             </>
             : null
           }

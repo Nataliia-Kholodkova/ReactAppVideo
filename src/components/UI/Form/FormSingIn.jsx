@@ -22,7 +22,7 @@ const FormSignIn = () => <Form onSubmit={(data) => {
     <form className={styles.form} onSubmit={handleSubmit} onClick={(event) => event.stopPropagation()}>
       <Field name="email" render={({ input, meta }) => (
         <label className={styles.labelText}>
-          <input type="email" {...input} placeholder="Email" className={`${styles.input} ${meta.error ? styles.error : ''}`} />
+          <input type="email" {...input} placeholder="Email" className={`${styles.input} ${(meta.error || meta.submitError) && meta.touched ? styles.error : ''}`} />
           <EmailSvg />
           {(meta.error || meta.submitError) && meta.touched && (
             <span className={styles.small}>{meta.error || meta.submitError}</span>)}
@@ -30,7 +30,7 @@ const FormSignIn = () => <Form onSubmit={(data) => {
       )} />
       <Field name="password" render={({ input, meta }) => (
         <label className={styles.labelText}>
-          <input type="password" {...input} placeholder="Password" className={`${styles.input} ${submitError ? styles.error : ''}`} />
+          <input type="password" {...input} placeholder="Password" className={`${styles.input} ${(meta.error || meta.submitError) && meta.touched ? styles.error : ''}`} />
           <LockSvg />
           {(meta.error || meta.submitError) && meta.touched && (
             <span className={styles.small}>{meta.error || meta.submitError}</span>
