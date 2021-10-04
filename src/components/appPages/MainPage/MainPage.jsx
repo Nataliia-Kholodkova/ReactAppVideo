@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Line from '../../ShowsLine/ShowsLine';
 import Preloader from '../../UI/Preloader/Preloader';
 import Error from '../Error/Error';
@@ -7,17 +7,23 @@ import { useFilteredByGenreShows, useSortByPremierDateShows } from '../../../cus
 import { setFilterByGenreActionCreator } from '../../../redux/actionCreators/filtersActionCreators';
 import { setCurrentShowsIsLoadActionCreator, getCurrentShowsActionCreator } from '../../../redux/actionCreators/currentShowsActionCreators';
 import genreNames from '../../../utils/genres';
+import { getCurrentShowsSelector } from '../../../redux/selectors';
 
-const MainPage = ({ shows, isLoad, setShows, setShowsLoad, setGenre }) => {
+const MainPage = () => {
   const date = new Date().toISOString().split('T')[0];
   const [loadError, setLoadError] = useState(null);
+  const { shows, isLoad } = useSelector(getCurrentShowsSelector);
+  const dispatch = useDispatch();
+
+  const setGenre = (genre) => dispatch(setFilterByGenreActionCreator(genre));
 
   useEffect(() => {
-    setShowsLoad(true);
-    setShows(date)
+    dispatch(setCurrentShowsIsLoadActionCreator(true));
+    dispatch(getCurrentShowsActionCreator(date))
       .catch((error) => setLoadError(`Server error: ${error.message}`))
-      .finally(setShowsLoad(false));
-  }, []);
+      .finally(dispatch(setCurrentShowsIsLoadActionCreator(false)));
+  }, [dispatch]);
+
   return (<>
     {loadError && <Error error={loadError} />}
     <main className="main mainSingle">
@@ -27,8 +33,7 @@ const MainPage = ({ shows, isLoad, setShows, setShowsLoad, setGenre }) => {
         : <>{genreNames.map((genreName) => (
           <Line
             key={genreName} genre={genreName}
-            shows={useSortByPremierDateShows(useFilteredByGenreShows(shows, [genreName]), 'asc')
-              .filter((show) => show.image)}
+            shows={useSortByPremierDateShows(useFilteredByGenreShows(shows, [genreName]), 'asc')}
             setGenre={setGenre}
             isLoad={isLoad}
           />
@@ -39,12 +44,4 @@ const MainPage = ({ shows, isLoad, setShows, setShowsLoad, setGenre }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setShows: (date) => dispatch(getCurrentShowsActionCreator(date)),
-  setShowsLoad: (flag) => dispatch(setCurrentShowsIsLoadActionCreator(flag)),
-  setGenre: (genre) => dispatch(setFilterByGenreActionCreator(genre)),
-});
-
-const mapStateToProps = (state) => ({ ...state.currentShows });
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainPage);
+export default MainPage;

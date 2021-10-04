@@ -7,9 +7,6 @@ import 'react-multi-carousel/lib/styles.css';
 import styles from './ActorBig.module.css';
 
 const ActorBig = ({ actor, cast }) => {
-  if (Object.keys(actor).length === 0 || Object.keys(cast).length === 0) {
-    return null;
-  }
   const { image, name, country: { name: country }, birthday, deathday, gender } = actor;
 
   return (

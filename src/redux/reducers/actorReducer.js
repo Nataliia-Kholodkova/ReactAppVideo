@@ -6,7 +6,7 @@ import {
 } from '../constants';
 
 const initialState = {
-  actor: {},
+  actor: null,
   isLoad: false,
   cast: [],
   isCastLoad: false,

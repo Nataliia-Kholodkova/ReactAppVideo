@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Aside from '../../../Aside/Aside';
 import Shows from '../../../Shows/Shows';
 import Error from '../../Error/Error';
 import { setSearchShowsIsLoadActionCreator, getSearchShowsActionCreator } from '../../../../redux/actionCreators/searchShowsActionCreators';
+import { getSearchedShowsSelector, getSearchedQuerySelector } from '../../../../redux/selectors';
 
-const ShowsPage = ({ showsState, query, setShowsLoad, setShows }) => {
-  const { isLoad, shows } = showsState;
+const ShowsPage = () => {
+  const { isLoad, shows } = useSelector(getSearchedShowsSelector);
+  const query = useSelector(getSearchedQuerySelector);
   const { loadError, setLoadError } = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setShowsLoad(true);
-    setShows(query)
+    dispatch(setSearchShowsIsLoadActionCreator(true));
+    dispatch(getSearchShowsActionCreator(query))
       .catch((error) => setLoadError(`Server error: ${error.message}`))
       .finally(() => {
-        setShowsLoad(false);
+        dispatch(setSearchShowsIsLoadActionCreator(false));
       });
-  }, [query]);
-
-  if (shows.length === 0) {
-    return null;
-  }
+  }, [query, dispatch]);
 
   return (
     <>
@@ -33,18 +32,4 @@ const ShowsPage = ({ showsState, query, setShowsLoad, setShows }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setShows: (query) => dispatch(getSearchShowsActionCreator(query)),
-  setShowsLoad: (flag) => dispatch(setSearchShowsIsLoadActionCreator(flag))
-}
-);
-
-const mapStateToProps = (state) => {
-  const { searchedShows, filters } = state;
-  return {
-    showsState: searchedShows,
-    query: filters.searchQuery,
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ShowsPage);
+export default ShowsPage;

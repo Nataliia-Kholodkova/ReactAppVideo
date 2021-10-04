@@ -1,18 +1,21 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ShowBig from '../../ShowBig/ShowBig';
 import Preloader from '../../UI/Preloader/Preloader';
 import { setShowIsLoadActionCreator, getShowActionCreator } from '../../../redux/actionCreators/showActionCreators';
+import { getShowSelector } from '../../../redux/selectors';
 
-const ShowPage = ({ show, isLoad, setShow, setShowLoad }) => {
+const ShowPage = ({ setShow, setShowLoad }) => {
   const { showId } = useParams();
+  const { show, isLoad } = useSelector(getShowSelector);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setShowLoad(true);
-    setShow(showId)
-      .finally(() => setShowLoad(false));
-  }, [showId]);
+    dispatch(setShowIsLoadActionCreator(true));
+    dispatch(getShowActionCreator(showId))
+      .finally(() => dispatch(setShowIsLoadActionCreator(false)));
+  }, [showId, dispatch]);
 
   return (<>
     {isLoad
@@ -23,11 +26,4 @@ const ShowPage = ({ show, isLoad, setShow, setShowLoad }) => {
   </>);
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setShow: (id) => dispatch(getShowActionCreator(id)),
-  setShowLoad: (flag) => dispatch(setShowIsLoadActionCreator(flag)),
-});
-
-const mapStateToProps = (state) => ({ ...state.show });
-
-export default connect(mapStateToProps, mapDispatchToProps)(ShowPage);
+export default ShowPage;

@@ -1,44 +1,48 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Shows from '../../Shows/Shows';
 import Aside from '../../Aside/Aside';
 import Error from '../Error/Error';
 import useObserver from '../../../customHooks/useObserver';
 import { setShowsPageActionCreator, setShowsIsLoadActionCreator, getShowsActionCreator, setShowsShouldLoadActionCreator, setShowsLastIndexActionCreator } from '../../../redux/actionCreators/showsActionCreators';
+import { getShowsSelector } from '../../../redux/selectors';
 
-const ShowsPage = ({ isLoad, shows, shouldLoad, page, lastIndex, setShowsLoad, setShows, setPage, setShowsShouldLoad, setShowsLastIndex }) => {
+const ShowsPage = () => {
   const lastDivRef = useRef();
   const [showsToShow, setShowsToShow] = useState([]);
   const [loadError, setLoadError] = useState(null);
+  const { isLoad, shows, shouldLoad, page, lastIndex } = useSelector(getShowsSelector);
+  const dispatch = useDispatch();
 
   useObserver(lastDivRef, isLoad, () => {
     if (shows.length > 0) {
       if (lastIndex + 10 > shows.length) {
-        setPage(page + 1);
+        dispatch(setShowsPageActionCreator(page + 1));
       } else {
-        setShowsLoad(true);
+        dispatch(setShowsIsLoadActionCreator(true));
         setShowsToShow([...showsToShow, ...shows.slice(lastIndex, lastIndex + 10)]);
-        setShowsLastIndex(lastIndex + 10);
-        setShowsLoad(false);
+        dispatch(setShowsLastIndexActionCreator(lastIndex + 10));
+        dispatch(setShowsIsLoadActionCreator(false));
       }
     }
   });
 
   useEffect(() => {
     if (shouldLoad) {
-      setShowsLoad(true);
-      setShows(page)
+      dispatch(setShowsIsLoadActionCreator(true));
+      dispatch(getShowsActionCreator(page))
         .catch((error) => {
           setLoadError(`Server error: ${error.message}`);
         })
         .finally(() => {
-          setShowsLoad(false);
+          dispatch(setShowsIsLoadActionCreator(false));
         });
     }
-    setShowsShouldLoad(true);
+    dispatch(setShowsShouldLoadActionCreator(true));
     return () => {
-      setShowsShouldLoad(false);
-      setShowsLastIndex(0);
+      dispatch(setShowsShouldLoadActionCreator(false));
+      dispatch(setShowsLastIndexActionCreator(0));
+      dispatch(setShowsPageActionCreator(0));
     };
   }, [page]);
 
@@ -54,14 +58,4 @@ const ShowsPage = ({ isLoad, shows, shouldLoad, page, lastIndex, setShowsLoad, s
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  setShows: (page) => dispatch(getShowsActionCreator(page)),
-  setShowsLoad: (flag) => dispatch(setShowsIsLoadActionCreator(flag)),
-  setShowsShouldLoad: (flag) => dispatch(setShowsShouldLoadActionCreator(flag)),
-  setPage: (page) => dispatch(setShowsPageActionCreator(page)),
-  setShowsLastIndex: (index) => dispatch(setShowsLastIndexActionCreator(index)),
-});
-
-const mapStateToProps = (state) => ({ ...state.shows });
-
-export default connect(mapStateToProps, mapDispatchToProps)(ShowsPage);
+export default ShowsPage;
